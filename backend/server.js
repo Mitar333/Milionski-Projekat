@@ -1,17 +1,21 @@
+// backend/server.js
+
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const appointmentRoutes = require('./routes/appointments');
 
 const app = express();
+const PORT = 5000;
+
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/frizerski', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+// Primer ruta
+app.get('/', (req, res) => {
+  res.send('Backend radi!');
 });
 
-app.use('/api/appointments', appointmentRoutes);
+// Ovde možeš dodavati rute za zakazivanje termina itd.
 
-app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+app.listen(PORT, () => {
+  console.log(`Server radi na http://localhost:${PORT}`);
+});
