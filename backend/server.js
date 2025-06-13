@@ -13,7 +13,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Backend radi!');
 });
-app.get('/api/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Backend radi1!');
 });
 // Ovde možeš dodavati rute za zakazivanje termina itd.
