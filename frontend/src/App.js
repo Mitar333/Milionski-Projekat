@@ -4,7 +4,7 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('https://milionski-projekat.onrender.com/')
+    fetch('https://milionski-projekat.onrender.com/api/')
       .then(res => res.text())
       .then(data => setMessage(data));
   }, []);
