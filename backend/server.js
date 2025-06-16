@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Povezivanje sa MongoDB
-mongoose.connect('mongodb://localhost:27017/milionski-projekat', {
+mongoose.connect('process.env.MONGO_VLADIMIR', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('MongoDB konektovan'))
@@ -21,6 +21,12 @@ mongoose.connect('mongodb://localhost:27017/milionski-projekat', {
 //povezivanje sa rutama
 app.use("/api",userRoutes)
 app.use("/api",ApointmentRoutes)
+
+// Error handling middleware (optional)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 app.listen(PORT, () => {
   console.log(`Server radi na http://localhost:${PORT}`);
