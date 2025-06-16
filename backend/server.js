@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Povezivanje sa MongoDB
-mongoose.connect('process.env.MONGO_VLADIMIR', {
+mongoose.connect('process.env.MONGO_URI', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('MongoDB konektovan'))
