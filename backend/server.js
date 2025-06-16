@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const User = require('./models/user');
-const Apointment = require('./models/Apointment');
+//const Apointment = require('./models/Apointment');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,8 +19,8 @@ mongoose.connect('process.env.MONGO_VLADIMIR', {
 .catch(err => console.error('Greška pri konekciji:', err));
 
 //povezivanje sa rutama
-app.use("/api",userRoutes)
-app.use("/api",ApointmentRoutes)
+// app.use("/api",userRoutes)
+// app.use("/api",ApointmentRoutes)
 
 // Error handling middleware (optional)
 app.use((err, req, res, next) => {
