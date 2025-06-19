@@ -1,6 +1,7 @@
 const userControler= require('../controllers/userController');
 const express = require('express');
 const router = express.Router();
+
 // Route to get all users
 router.get('/', userControler.getAllUsers);
 // Route to get a user by ID
