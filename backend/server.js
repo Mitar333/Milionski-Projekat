@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const User = require('./models/user');
+const userRoutes = require('./routes/userRoutes');
+
+//const ApointmentRoutes = require('./routes/ApointmentRoutes');
 //const Apointment = require('./models/Apointment');
 
 const app = express();
@@ -11,6 +14,8 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/users", userRoutes);
+// app.use("/api/appointments", ApointmentRoutes);
 
 // Povezivanje sa MongoDB
 mongoose.connect(process.env.MONGO_URI, {}).then(() => console.log('MongoDB konektovan'))
