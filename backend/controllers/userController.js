@@ -25,8 +25,8 @@ exports.getUserById = async (req, res) => {
     }
 }
 exports.postUser = async (req, res) => {
-    const { name, email, password } = req.body;
-    if (!name || typeof name !== 'string' || name.trim() === '') {
+    const { fullName, email, password } = req.body;
+    if (!fullName || typeof fullName !== 'string' || fullName.trim() === '') {
         return res.status(400).json({ message: 'Name is required' });
     }
     if (!email || isEmail(email) === false) {
@@ -44,9 +44,9 @@ exports.postUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         // Create a new user
         const newUser = new User({
-            name,
+            fullName,
             email,
-            password: hashedPassword
+            passwordHash: hashedPassword
         });
         // Save the user to the database
         await newUser.save();
