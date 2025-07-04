@@ -4,7 +4,7 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/')
+    fetch('https://milionski-projekat.onrender.com/api/')
       .then(res => res.text())
       .then(data => setMessage(data));
   }, []);
