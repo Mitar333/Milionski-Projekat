@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 // Definisanje ruta
@@ -36,7 +36,9 @@ app.use((err,req,res,next)=>{
 })
 
 // app.use()
-
+app.use('/api/users', userRoutes);
+app.use('/api/owners', ownerRoutes);
+app.use('/api/salons', salonRoutes);
 
 
 // Povezivanje sa MongoDB
