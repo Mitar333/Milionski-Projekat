@@ -6,35 +6,32 @@ const cors = require('cors');
 const path = require('path'); // Uvezi 'path' modul
 
 // Uvezi rute
-const userRoutes = require('./routes/userRoutes');
-const ownerRoutes = require('./routes/ownerRoutes');
-const salonRoutes = require('./routes/salonRoutes');
-// const ApointmentRoutes = require('./routes/ApointmentRoutes'); // Ako ovo želiš koristiti, morao bi ga aktivirati
+const userRoutes = require('./routes/userRoutes'); // Dodaj
+const ownerRoutes = require('./routes/ownerRoutes'); // Dodaj
+const salonRoutes = require('./routes/salonRoutes'); // Dodaj
+// const ApointmentRoutes = require('./routes/ApointmentRoutes'); // Ostavi zakomentarisano ako se ne koristi
 
-const AppError = require('./utils/errorHandler').AppError;
+const AppError = require('./utils/errorHandler').AppError; // Proveri putanju ako ne postoji
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; //
 
-app.use(cors());
-app.use(express.json()); // Middleware za parsiranje JSON tela
-app.use(express.urlencoded({ extended: true })); // Middleware za parsiranje URL-encoded (potrebno za Multer)
+app.use(cors()); //
+app.use(express.json()); //
+app.use(express.urlencoded({ extended: true })); // Dodaj za multer
 
 // Serviraj statičke fajlove iz 'uploads' foldera (za logotipe)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Otkomentarisi
 
 // Definisanje i korišćenje ruta
-app.use('/api/users', userRoutes);
-app.use('/api/owners', ownerRoutes);
-app.use('/api/salons', salonRoutes);
+app.use('/api/users', userRoutes); // Otkomentarisi
+app.use('/api/owners', ownerRoutes); // Otkomentarisi
+app.use('/api/salons', salonRoutes); // Otkomentarisi
 
 // OPREZ: Ruta '/salons/:salonId/users' unutar userRoutes.js
-// Ako želiš da ruta GET /api/salons/:salonId/users radi, a ona je definisana u userRoutes.js kao router.get('/salons/:salonId/users'),
-// onda je to i dalje problematično jer će stvarna ruta biti /api/users/salons/:salonId/users.
-// NAJBOLJE REŠENJE: Premesti router.get('/salons/:salonId/users', userController.getUsersBySalon);
-// iz userRoutes.js u salonRoutes.js, i tamo neka bude samo router.get('/:salonId/users', ...);
-// Onda bi se koristila kao app.use('/api/salons', salonRoutes); i putanja bi bila ispravna.
-
+// Kao što je ranije sugerisano, preporučljivo je premestiti `router.get('/salons/:salonId/users', userController.getUsersBySalon);`
+// iz `userRoutes.js` u `salonRoutes.js` kako bi bila logički grupisana i imala ispravnu putanju `GET /api/salons/:salonId/users`.
+// U tom slučaju, u `salonRoutes.js` bi izgledala kao `router.get('/:salonId/users', userController.getUsersBySalon);`
 
 // Detektuje ako si ukucao pogresan url (ovo treba da bude POSLE svih tvojih definicija ruta)
 app.all("*",(req,res,next)=>{
@@ -51,11 +48,10 @@ app.use((err,req,res,next)=>{
   })
 })
 
-
 // Povezivanje sa MongoDB
 mongoose.connect(process.env.MONGO_URI, {}).then(() => console.log('MongoDB konektovan'))
 .catch(err => console.error('Greška pri konekciji:', err));
 
 app.listen(PORT, () => {
-  console.log(`Server radi na http://localhost:${PORT}`);
+  console.log(`Server radi na http://localhost:${PORT}`); //
 });
