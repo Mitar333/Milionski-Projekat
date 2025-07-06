@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router(); // Ova linija je ključna
 const userController = require('../controllers/userController'); // Prilagodi putanju ako je potrebno
 
 // NAPOMENA: Ako ćeš imati autentifikaciju (što je preporučeno za mnoge od ovih ruta),

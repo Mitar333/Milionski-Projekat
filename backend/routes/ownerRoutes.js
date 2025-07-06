@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router(); // Ova linija je ključna
 const ownerController = require('../controllers/ownerController');
 // const authMiddleware = require('../middleware/authMiddleware'); // Vaš budući auth middleware
 
