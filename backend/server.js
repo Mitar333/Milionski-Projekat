@@ -3,12 +3,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
-//const User = require('./models/userSchema');
-//const userRoutes = require('./routes/userRoutes');
-
-
-//const ApointmentRoutes = require('./routes/ApointmentRoutes');
-//const Apointment = require('./models/Apointment');
+const AppError=require("./utils/errorHandler").AppError
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -28,10 +23,7 @@ app.use(express.json());
 
 // Detektuje ako si ukucao pogresan url
 app.all("*",(req,res,next)=>{
-  const err=new Error(`Ruta ${req.originalUrl} nije pronađena`);
-  err.status="fail";
-  err.statusCode=404;
-  next(err)
+  next(new AppError(`Ruta ${req.originalUrl} nije pronađena`,404))
 })
 
 app.use((err,req,res,next)=>{
