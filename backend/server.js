@@ -4,9 +4,6 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const userRoutes = require('./routes/userRoutes');
-const ownerRoutes = require('./routes/ownerRoutes');
-const salonRoutes = require('./routes/salonRoutes');
 
 
 //const ApointmentRoutes = require('./routes/ApointmentRoutes');
