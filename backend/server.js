@@ -41,9 +41,9 @@ app.use((err,req,res,next)=>{
 })
 
 // app.use()
-app.use('/api/users', userRoutes);
-app.use('/api/owners', ownerRoutes);
-app.use('/api/salons', salonRoutes);
+//app.use('/api/users', userRoutes);
+//app.use('/api/owners', ownerRoutes);
+//app.use('/api/salons', salonRoutes);
 
 
 // Povezivanje sa MongoDB
