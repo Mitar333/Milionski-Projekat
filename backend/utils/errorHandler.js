@@ -17,5 +17,8 @@ const errorHandler = (err, req, res, next) => {
     message: err.message,
   });
 };
-
-module.exports = { AppError, errorHandler };
+const catchAsync=fn=>{ 
+  return(req,res,next)=>{
+  fn(req,res,next).catch(next)}
+}
+module.exports = { AppError, errorHandler,catchAsync };

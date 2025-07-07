@@ -5,6 +5,12 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path'); // Uvezi 'path' modul
 
+process.on("uncaughtException",err=>{
+  console.log(err);
+  console.log("Error!! Aplication Shutdown"); 
+  process.exit(1)
+})
+
 // Uvezi rute
 const userRoutes = require('./routes/userRoutes'); // Dodaj
 const ownerRoutes = require('./routes/ownerRoutes'); // Dodaj
@@ -52,6 +58,12 @@ app.use((err,req,res,next)=>{
 mongoose.connect(process.env.MONGO_URI, {}).then(() => console.log('MongoDB konektovan'))
 .catch(err => console.error('Greška pri konekciji:', err));
 
-app.listen(PORT, () => {
+const server=app.listen(PORT, () => {
   console.log(`Server radi na http://localhost:${PORT}`); //
+});
+
+process.on("unhandledRejection",err=>{
+  console.log(err);
+  console.log("Error! Aplication Shutdown"); 
+  server.close(()=>{process.exit(1)})
 });

@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
+const catchAsync=require("./../utils/errorHandler").catchAsync
+const AppError=require("./../utils/errorHandler").AppError
 // za pravljenje 'uploads' foldera ako ne postoji
 const uploadDir = path.join(__dirname, '..', 'uploads', 'logos');
 if (!fs.existsSync(uploadDir)) {
@@ -38,13 +39,14 @@ const upload = multer({
 
 // za pravljenje novog salona
 //////////////////////// TREBA ZASTITITI JER OVO BI TREBALO DA BUDE DOSTUPNO SAMO OWNERU SALONA ILI ADMINU ////////////////////////
-exports.addSalon = async (req, res) => {
-  try {
+exports.addSalon =catchAsync( async (req, res,next) => {
+  
     const { name, address, phone, email, workingHours, description } = req.body;
 
     let existingSalon = await Salon.findOne({ $or: [{ name }, { email }] });
     if (existingSalon) {
-      return res.status(400).json({ message: 'Salon sa ovim imenom ili emailom vec postoji.' });
+      
+      return next(new AppError( 'Salon sa ovim imenom ili emailom vec postoji.',400))
     }
 
     const newSalon = new Salon({
@@ -58,74 +60,68 @@ exports.addSalon = async (req, res) => {
 
     const salon = await newSalon.save();
     res.status(201).json(salon);
-  } catch (error) {
-    console.error('Greska pri dodavanju salona:', error);
-    if (error.code === 11000) {
-      return res.status(400).json({ message: `Salon sa ${Object.keys(error.keyValue)[0]} '${Object.values(error.keyValue)[0]}' vec postoji.` });
-    }
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+  
+});
 
 // uzima javne detalje salona
-exports.getPublicSalonDetails = async (req, res) => {
-  try {
+exports.getPublicSalonDetails =catchAsync( async (req, res,next) => {
+  
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalidan Salon ID.' });
+    
+      return next(new AppError( 'Invalidan Salon ID.',400))
     }
 
     const salon = await Salon.findById(id);
 
     if (!salon) {
-      return res.status(404).json({ message: 'Salon nije pronadjen.' });
+     
+      return next(new AppError( 'Salon nije pronadjen.',404))
     }
 
     res.status(200).json(salon);
-  } catch (error) {
-    console.error('Greska pri uzimanju javnih detalja salona:', error);
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+  
+});
 
 // uzima detalje salona za autentifikovanog ownera.
 // onwer može imati vise salona, pa vracamo listu salona koje ima.
-exports.getOwnerSalonDetails = async (req, res) => {
-  try {
+exports.getOwnerSalonDetails =catchAsync( async (req, res,next) => {
+  
     const ownerId = req.user.id;
 
     const owner = await Owner.findById(ownerId).populate('salonIds');
     if (!owner) {
-      return res.status(404).json({ message: 'Owner nije pronadjen.' });
+      return next(new AppError( 'Owner nije pronadjen.',404))
+      
     }
 
     if (!owner.salonIds || owner.salonIds.length === 0) {
-      return res.status(404).json({ message: 'Owner nema povezanih salona.' });
+      
+      return next(new AppError( 'Owner nema povezanih salona.' ,404))
     }
 
     res.status(200).json(owner.salonIds);
-  } catch (error) {
-    console.error('Greska pri uzimanju detalja salona za ownera:', error);
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+  
+});
 
 // updateuje detalje salona za Ownera.
-exports.updateSalonDetails = async (req, res) => {
-  try {
+exports.updateSalonDetails =catchAsync( async (req, res,next) => {
+  
     const ownerId = req.user.id;
     const updateData = req.body;
 
     const owner = await Owner.findById(ownerId);
     if (!owner) {
-      return res.status(404).json({ message: 'Owner nije pronadjen.' });
+      return next(new AppError( 'Owner nije pronadjen.',404))
+      
     }
 
     const salonIdToUpdate = owner.salonIds[0]; // Nije bas dobro ako owner ima vise salona, ali ajd za sad ce mo ovako
                                             
     if (!salonIdToUpdate || !mongoose.Types.ObjectId.isValid(salonIdToUpdate)) {
-        return res.status(400).json({ message: 'Nema povezanog salona za updateovanje ili ID je nevalidan.' });
+      return next(new AppError( 'Nema povezanog salona za updateovanje ili ID je nevalidan.',400))
+        
     }
 
     delete updateData._id;
@@ -135,26 +131,22 @@ exports.updateSalonDetails = async (req, res) => {
     const updatedSalon = await Salon.findByIdAndUpdate(salonIdToUpdate, updateData, { new: true, runValidators: true });
 
     if (!updatedSalon) {
-      return res.status(404).json({ message: 'Salon nije pronadjen za updateovanje.' });
+      return next(new AppError( 'Salon nije pronadjen za updateovanje.',404))
+      
     }
 
     res.status(200).json({ message: 'Salon uspesno updateovan.', salon: updatedSalon });
-  } catch (error) {
-    console.error('Greska pri updateovanju detalja salona:', error);
-    if (error.code === 11000) {
-      return res.status(400).json({ message: `Salon sa ${Object.keys(error.keyValue)[0]} '${Object.values(error.keyValue)[0]}' vec postoji.` });
-    }
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+  
+});
 
 // Uploaduje i updateuje logo salona.
 exports.uploadSalonLogo = [
   upload.single('logo'),
-  async (req, res) => {
-    try {
+ catchAsync( async (req, res,next) => {
+    
       if (!req.file) {
-        return res.status(400).json({ message: 'Nijedan fajl nije poslat.' });
+        return next(new AppError( 'Nijedan fajl nije poslat.',400))
+ 
       }
 
       const ownerId = req.user.id;
@@ -162,21 +154,25 @@ exports.uploadSalonLogo = [
 
       if (!owner) {
         fs.unlinkSync(req.file.path);
-        return res.status(404).json({ message: 'Owner nije pronadjen.' });
+        return next(new AppError( 'Owner nije pronadjen.',404))
+     
       }
 
       const salonIdToUpdate = owner.salonIds[0]; // Nije bas dobro ako owner ima vise salona, ali ajd za sad ce mo ovako
                                                 
       if (!salonIdToUpdate || !mongoose.Types.ObjectId.isValid(salonIdToUpdate)) {
         fs.unlinkSync(req.file.path);
-        return res.status(400).json({ message: 'Nema povezanog salona za upload loga ili ID je invalidan.' });
+        return next(new AppError( 'Nema povezanog salona za updateovanje ili ID je nevalidan.',400))
+        
       }
 
       const salon = await Salon.findById(salonIdToUpdate);
 
       if (!salon) {
         fs.unlinkSync(req.file.path);
-        return res.status(404).json({ message: 'Salon nije pronadjen.' });
+        
+        return next(new AppError( 'Salon nije pronadjen.',404))
+        
       }
 
       if (salon.logoUrl) {
@@ -190,12 +186,6 @@ exports.uploadSalonLogo = [
       await salon.save();
 
       res.status(200).json({ message: 'Logo uspesno uploadovan i updateovan!', logoUrl: salon.logoUrl });
-    } catch (error) {
-      console.error('Greska pri uploadu loga salona:', error);
-      if (req.file && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
-      }
-      res.status(500).json({ message: 'Server greska pri uploadu loga.', error: error.message });
-    }
-  }
+    
+  })
 ];

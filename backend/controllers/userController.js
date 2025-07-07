@@ -4,15 +4,18 @@ const User = require('../models/userSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-
+const catchAsync=require("./../utils/errorHandler").catchAsync
+const AppError=require("./../utils/errorHandler").AppError
 // registracija
-exports.createUser = async (req, res) => {
-  try {
+
+
+exports.createUser = catchAsync(async (req, res,next) => {
+  
     const { salonId, firstName, lastName, email, password, phone, notes } = req.body;
     
     let existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User sa ovim emailom vec postoji.' });
+      return next(new AppError('User sa ovim emailom vec postoji.',400))
     }
    
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,64 +36,54 @@ exports.createUser = async (req, res) => {
     delete userResponse.password;
 
     res.status(201).json(userResponse);
-  } catch (error) {
-    console.error('Greska pri pravljenju usera:', error);
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+ 
+})
 
 // gledanje usera iz odredjenog salona
-exports.getUsersBySalon = async (req, res) => {
-  try {
+exports.getUsersBySalon =catchAsync( async (req, res,next) => {
+  
     const { salonId } = req.params;
     
     if (!mongoose.Types.ObjectId.isValid(salonId)) {
-        return res.status(400).json({ message: 'Invalidan Salon ID.' });
+        return next(new AppError('Invalidan Salon ID.',400))
     }
 
     const users = await User.find({ salonId }).select('-password');
 
     if (!users || users.length === 0) {
-      return res.status(404).json({ message: 'Nema pronadjenih usera za ovaj salon.' });
-    }
+      return next(new AppError('Nema pronadjenih usera za ovaj salon.',404))}
 
     res.status(200).json(users);
-  } catch (error) {
-    console.error('Greska pri pozivanju usera za salon:', error);
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+ 
+})
 
 // gledanje odredjenog usera po id
-exports.getUserDetails = async (req, res) => {
-  try {
+exports.getUserDetails =catchAsync( async (req, res,next) => {
+  
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: 'Invalidan user ID.' });
+        return next(new AppError('Invalidan user ID.',400))
     }
 
     const user = await User.findById(id).select('-password');
 
     if (!user) {
-      return res.status(404).json({ message: 'User nije pronadjen.' });
+      return next(new AppError('User nije pronadjen.',404))
     }
 
     res.status(200).json(user);
-  } catch (error) {
-    console.error('Greska pri pozivanju detalja usera:', error);
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+ 
+});
 
 // update podataka usera
-exports.updateUser = async (req, res) => {
-  try {
+exports.updateUser =catchAsync( async (req, res,next) => {
+  
     const { id } = req.params;
     const updateData = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: 'Invalidan user ID.' });
+        return next(new AppError('Invalidan user ID.',400))
     }
 
     if (updateData.password) {
@@ -100,19 +93,12 @@ exports.updateUser = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true, runValidators: true }).select('-password');
 
     if (!updatedUser) {
-      return res.status(404).json({ message: 'User nije pronadjen za update.' });
+      return next(new AppError('User nije pronadjen.',404))
     }
 
     res.status(200).json(updatedUser);
-  } catch (error) {
-    console.error('Greska pri update usera:', error);
-
-    if (error.code === 11000) {
-      return res.status(400).json({ message: 'User sa ovim emailom ili telefonom vec postoji.', field: Object.keys(error.keyValue)[0] });
-    }
-    res.status(500).json({ message: 'Server greska.', error: error.message });
-  }
-};
+  
+});
 
 
 
