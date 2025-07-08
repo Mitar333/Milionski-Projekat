@@ -42,7 +42,7 @@ const EmployeeSchema = new mongoose.Schema({
         required: true,
         minlength: 6 // DODATO: Minimalna duzina lozinke
     },
-    schedule: { // ISPRAVLJENO: scheadule -> schedule
+    schedule: { 
         type: Map,
         of: String,
         default: {}
