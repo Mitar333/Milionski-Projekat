@@ -4,14 +4,13 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const path = require('path'); // Uvezi 'path' modul
-
+console.log(path)
 process.on("uncaughtException",err=>{
   console.log(err);
   console.log("Error!! Aplication Shutdown"); 
   process.exit(1)
 })
 
-// Uvezi rute
 // Uvezi rute
 const userRoutes = require('./routes/userRoutes');
 const ownerRoutes = require('./routes/ownerRoutes');
