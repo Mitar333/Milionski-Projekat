@@ -1,4 +1,5 @@
 // models/ownerSchema.js - Ažurirana verzija
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -20,7 +21,8 @@ const ownerSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6
+        minlength: 6,
+        select: false // Ovo je bitno! Ne vraća lozinku po defaultu pri find() pozivima
     },
     role: {
         type: String,
@@ -38,12 +40,23 @@ const ownerSchema = new Schema({
         required: true,
         trim: true
     },
-    // OVDJE BI TREBALO BITI `salonIds` ako jedan owner može imati više salona
     salonIds: [{ type: Schema.Types.ObjectId, ref: 'Salon', required: true }],
     isActive: {
         type: Boolean,
         default: true
-    }
+    },
+    // Dodato za resetovanje lozinke
+    passwordResetToken: String,
+    passwordResetExpires: Date
 }, { timestamps: true });
+
+// Optional: Hash password before saving (if not already handled in controller)
+// ownerSchema.pre('save', async function(next) {
+//     if (!this.isModified('password')) {
+//         next();
+//     }
+//     this.password = await bcrypt.hash(this.password, 10);
+//     next();
+// });
 
 module.exports = mongoose.model('Owner', ownerSchema);
