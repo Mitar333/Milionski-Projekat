@@ -1,5 +1,3 @@
-// models/ownerSchema.js - Ažurirana verzija
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 

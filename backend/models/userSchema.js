@@ -37,6 +37,7 @@ const userSchema = new Schema({
     },
     phone: {
         type: String,
+        required: true,
         trim: true,
         match: [/^\+?\d{1,3}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/, 'Please fill a valid phone number']
     },
