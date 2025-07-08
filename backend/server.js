@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const path = require('path'); // Uvezi 'path' modul
-console.log(path)
+
 process.on("uncaughtException",err=>{
   console.log(err);
   console.log("Error!! Aplication Shutdown"); 
