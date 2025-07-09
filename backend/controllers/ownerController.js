@@ -2,24 +2,22 @@ const Owner = require('../models/ownerSchema');
 const Salon = require('../models/salonSchema');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const catchAsync=require("./../utils/errorHandler").catchAsync
-const AppError=require("./../utils/errorHandler").AppError
+
 ////////////////////////////////////// sve 'me' rute zahtevaju autentifikaciju ownera.
 // Owner pravi dodatni salon i povezuje ga sa svojim profilom.
-exports.createAdditionalSalon =catchAsync( async (req, res,next) => {
-  
+exports.createAdditionalSalon = async (req, res) => {
+  try {
     const ownerId = req.user.id;
     const { name, address, phone, email, workingHours, description } = req.body;
 
     const owner = await Owner.findById(ownerId);
     if (!owner) {
-      return next(new AppError( 'Owner nije pronadjen.',404))
+      return res.status(404).json({ message: 'Owner nije pronadjen.' });
     }
 
     let existingSalon = await Salon.findOne({ $or: [{ name }, { email }] });
     if (existingSalon) {
-      return next(new AppError( 'Salon sa ovim imenom ili emailom vec postoji.',400))
-      
+      return res.status(400).json({ message: 'Salon sa ovim imenom ili emailom vec postoji.' });
     }
 
     const newSalon = new Salon({
@@ -37,29 +35,34 @@ exports.createAdditionalSalon =catchAsync( async (req, res,next) => {
     await owner.save();
 
     res.status(201).json({ message: 'Dodatni salon uspesno napravljen i povezan sa ownerom.', salon });
- 
-});
+  } catch (error) {
+    console.error('Greska pri kreiranju dodatnog salona:', error);
+
+    if (error.code === 11000) {
+      return res.status(400).json({ message: `Salon sa ${Object.keys(error.keyValue)[0]} '${Object.values(error.keyValue)[0]}' vec postoji.` });
+    }
+    res.status(500).json({ message: 'Server greska.', error: error.message });
+  }
+};
 
 // Owner updateuje detalje specificnog salona koji ima.
-exports.updateAdditionalSalon =catchAsync( async (req, res,next) => {
-  
+exports.updateAdditionalSalon = async (req, res) => {
+  try {
     const ownerId = req.user.id;
     const { salonId } = req.params;
     const updateData = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(salonId)) {
-      return next(new AppError( 'Invalidan Salon ID.',400))
-        
+        return res.status(400).json({ message: 'Invalidan Salon ID.' });
     }
 
     const owner = await Owner.findById(ownerId);
     if (!owner) {
-      return next(new AppError( 'Owner nije pronadjen.',404))
-      
+      return res.status(404).json({ message: 'Owner nije pronadjen.' });
     }
 
     if (!owner.salonIds.some(id => id.toString() === salonId)) {
-      return next(new AppError( 'Nemate dozvolu za updateovanje ovog salona.',403))
+      return res.status(403).json({ message: 'Nemate dozvolu za updateovanje ovog salona.' });
     }
 
     delete updateData._id;
@@ -69,17 +72,23 @@ exports.updateAdditionalSalon =catchAsync( async (req, res,next) => {
     const updatedSalon = await Salon.findByIdAndUpdate(salonId, updateData, { new: true, runValidators: true });
 
     if (!updatedSalon) {
-      return next(new AppError( 'Salon nije pronadjen za updateovanje.',404))
+      return res.status(404).json({ message: 'Salon nije pronadjen za updateovanje.' });
     }
 
     res.status(200).json({ message: 'Salon uspesno updateovan.', salon: updatedSalon });
- 
-});
+  } catch (error) {
+    console.error('Greska pri updateovanju dodatnog salona:', error);
+    if (error.code === 11000) {
+      return res.status(400).json({ message: `Salon sa ${Object.keys(error.keyValue)[0]} '${Object.values(error.keyValue)[0]}' vec postoji.` });
+    }
+    res.status(500).json({ message: 'Server greska.', error: error.message });
+  }
+};
 
 
 // Updateuje podatke profila ownera (firstName, lastName, email, phone)
-exports.updateOwnerProfile =catchAsync( async (req, res,next) => {
-  
+exports.updateOwnerProfile = async (req, res) => {
+  try {
     const ownerId = req.user.id;
     const updateData = req.body;
 
@@ -92,42 +101,48 @@ exports.updateOwnerProfile =catchAsync( async (req, res,next) => {
     const updatedOwner = await Owner.findByIdAndUpdate(ownerId, updateData, { new: true, runValidators: true }).select('-password');
 
     if (!updatedOwner) {
-      return next(new AppError( 'Owner nije pronadjen za updateovanje profila.',404))
+      return res.status(404).json({ message: 'Owner nije pronadjen za updateovanje profila.' });
     }
 
     res.status(200).json({ message: 'Profil ownera uspesno updateovan.', owner: updatedOwner });
-  
-});
+  } catch (error) {
+    console.error('Greska pri updateovanju profila ownera:', error);
+    if (error.code === 11000) {
+      return res.status(400).json({ message: `Owner sa ${Object.keys(error.keyValue)[0]} '${Object.values(error.keyValue)[0]}' vec postoji.` });
+    }
+    res.status(500).json({ message: 'Server greska.', error: error.message });
+  }
+};
 
 // Dozvola owneru da promeni svoju lozinku.
-exports.changeOwnersPassword =catchAsync( async (req, res,next) => {
-  
+exports.changeOwnersPassword = async (req, res) => {
+  try {
     const ownerId = req.user.id;
     const { oldPassword, newPassword } = req.body;
 
     if (!oldPassword || !newPassword) {
-      
-       return next(new AppError( 'Stara i nova lozinka su obavezne.',400))
+      return res.status(400).json({ message: 'Stara i nova lozinka su obavezne.' });
     }
     if (newPassword.length < 6) {
-       return next(new AppError( 'Nova lozinka mora imati najmanje 6 karaktera.',400))
-        
+        return res.status(400).json({ message: 'Nova lozinka mora imati najmanje 6 karaktera.' });
     }
 
     const owner = await Owner.findById(ownerId);
     if (!owner) {
-       return next(new AppError( 'Owner nije pronadjen.',404))
-      
+      return res.status(404).json({ message: 'Owner nije pronadjen.' });
     }
 
     const isMatch = await bcrypt.compare(oldPassword, owner.password);
     if (!isMatch) {
-       return next(new AppError( 'Stara lozinka nije ispravna.',401))
+      return res.status(401).json({ message: 'Stara lozinka nije ispravna.' });
     }
 
     owner.password = await bcrypt.hash(newPassword, 10);
     await owner.save();
 
     res.status(200).json({ message: 'Lozinka uspesno promenjena.' });
-  
-});
+  } catch (error) {
+    console.error('Greska pri promeni lozinke ownera:', error);
+    res.status(500).json({ message: 'Server greska.', error: error.message });
+  }
+};

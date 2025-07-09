@@ -1,29 +1,53 @@
+// backend/routes/ownerRoutes.js
+
 const express = require('express');
-const router = express.Router(); // Ova linija je ključna
+const router = express.Router();
 const ownerController = require('../controllers/ownerController');
-// const authMiddleware = require('../middleware/authMiddleware'); // Vaš budući auth middleware
+const { verifyToken, authorizeRole, authorizeSalonAccess } = require('../utils/authMiddleware'); // Uvezi auth middleware
 
-// Pretpostavljamo da će authMiddleware.ownerAuth biti middleware koji proverava
-// da li je korisnik autentifikovan kao vlasnik i postavlja req.user.id.
+// ====================================================================
+// RUTNE ZA UPRAVLJANJE VLASNIKOM I NJEGOVIM SALONIMA
+// ====================================================================
 
-// Ruta za kreiranje dodatnog salona od strane vlasnika
-// POST /api/owners/me/salons
-// router.post('/me/salons', authMiddleware.ownerAuth, ownerController.createAdditionalSalon);
-router.post('/me/salons', ownerController.createAdditionalSalon); // Privremeno bez auth
+// @route   POST /api/owners/me/salons
+// @desc    Vlasnik kreira dodatni salon i povezuje ga sa svojim profilom.
+// @access  Private (Owner only)
+router.post(
+  '/me/salons',
+  verifyToken,        // Proveri JWT token
+  authorizeRole('owner'), // Samo vlasnik može kreirati dodatni salon
+  ownerController.createAdditionalSalon
+);
 
-// Ruta za ažuriranje specifičnog salona od strane vlasnika
-// PUT /api/owners/me/salons/:salonId
-// router.put('/me/salons/:salonId', authMiddleware.ownerAuth, ownerController.updateAdditionalSalon);
-router.put('/me/salons/:salonId', ownerController.updateAdditionalSalon); // Privremeno bez auth
+// @route   PUT /api/owners/me/salons/:salonId
+// @desc    Vlasnik ažurira specifičan salon koji mu pripada.
+// @access  Private (Owner only)
+router.put(
+  '/me/salons/:salonId',
+  verifyToken,        // Proveri JWT token
+  authorizeRole('owner'), // Samo vlasnik može ažurirati salon
+  authorizeSalonAccess,   // Proveri da li vlasnik ima pristup ovom salonu
+  ownerController.updateAdditionalSalon
+);
 
-// Ruta za ažuriranje profila vlasnika (firstName, lastName, email, phone)
-// PUT /api/owners/me
-// router.put('/me', authMiddleware.ownerAuth, ownerController.updateOwnerProfile);
-router.put('/me', ownerController.updateOwnerProfile); // Privremeno bez auth
+// @route   PUT /api/owners/me
+// @desc    Ažuriranje profila vlasnika (firstName, lastName, email, phone)
+// @access  Private (Owner only)
+router.put(
+  '/me',
+  verifyToken,        // Proveri JWT token
+  authorizeRole('owner'), // Samo vlasnik može ažurirati svoj profil
+  ownerController.updateOwnerProfile
+);
 
-// Ruta za promenu lozinke vlasnika
-// PUT /api/owners/me/password
-// router.put('/me/password', authMiddleware.ownerAuth, ownerController.changeOwnersPassword);
-router.put('/me/password', ownerController.changeOwnersPassword); // Privremeno bez auth
+// @route   PUT /api/owners/me/password
+// @desc    Dozvola vlasniku da promeni svoju lozinku.
+// @access  Private (Owner only)
+router.put(
+  '/me/password',
+  verifyToken,        // Proveri JWT token
+  authorizeRole('owner'), // Samo vlasnik može promeniti svoju lozinku
+  ownerController.changeOwnersPassword
+);
 
 module.exports = router;

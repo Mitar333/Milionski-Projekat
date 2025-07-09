@@ -12,51 +12,56 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        minlength: 2, // DODATO: Minimalna duzina
-        maxLength: 50 // DODATO: Maksimalna duzina
+        minlength: 2,
+        maxLength: 50
     },
     lastName: {
         type: String,
         required: true,
         trim: true,
-        minlength: 2, // DODATO: Minimalna duzina
-        maxLength: 50 // DODATO: Maksimalna duzina
+        minlength: 2,
+        maxLength: 50
     },
     email: {
         type: String,
         required: true,
-        // unique: true, // OPREZ: Globalno unique. Bolje je sa salonId.
         lowercase: true,
         trim: true,
-        match: [/.+@.+\..+/, 'Please fill a valid email address']
+        match: [/.+@.+\\..+/, 'Please fill a valid email address']
     },
     password: {
         type: String,
         required: true,
-        minlength: 6 // DOBRO: Minimalna dužina lozinke
+        minlength: 6,
+        select: false // Ovo je bitno!
     },
     phone: {
         type: String,
-        // required: true, // Razmisli da li je telefon obavezan za klijenta. Često jeste.
+        required: true,
         trim: true,
-        // unique: true, // OPREZ: Globalno unique. Bolje je sa salonId.
         match: [/^\+?\d{1,3}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/, 'Please fill a valid phone number']
     },
     notes: {
         type: String,
         trim: true,
         default: '',
-        maxLength: 500 // DODATO: Ogranicenje duzine
-    }
-}, { timestamps: true }); // PREPORUKA: Koristi ovo!
+        maxLength: 500
+    },
+    // Dodato za resetovanje lozinke
+    passwordResetToken: String,
+    passwordResetExpires: Date
+}, { timestamps: true });
 
-// PREPORUKA: Ako zelite da email i/ili telefon budu jedinstveni unutar SALONA za klijente:
 userSchema.index({ salonId: 1, email: 1 }, { unique: true });
-// userSchema.index({ salonId: 1, phone: 1 }, { unique: true }); // Ako je i telefon unique unutar salona
+// userSchema.index({ salonId: 1, phone: 1 }, { unique: true, sparse: true }); // Ako je telefon unique
 
-// userSchema.pre('save', function(next) {
-//   this.updatedAt = Date.now(); // OVO UKLONITI ako koristite timestamps: true
-//   next();
+// Optional: Hash password before saving
+// userSchema.pre('save', async function(next) {
+//     if (!this.isModified('password')) {
+//         next();
+//     }
+//     this.password = await bcrypt.hash(this.password, 10);
+//     next();
 // });
 
-module.exports = mongoose.model('Client', userSchema); // PREPORUKA: Preimenuj u 'Client' umjesto 'User'
+module.exports = mongoose.model('User', userSchema);
