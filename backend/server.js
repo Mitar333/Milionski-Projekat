@@ -15,7 +15,10 @@ process.on("uncaughtException",err=>{
 const userRoutes = require('./routes/userRoutes');
 const ownerRoutes = require('./routes/ownerRoutes');
 const salonRoutes = require('./routes/salonRoutes');
-const authRoutes = require('./routes/authRoutes'); // Uvezi auth rute
+const authRoutes = require('./routes/authRoutes');
+const appointmenRoutes = require('./routes/appointmenRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
+const employeeRoutes = require('./routes/employeeRoutes'); // Uvezi auth rute
 // const ApointmentRoutes = require('./routes/ApointmentRoutes'); // Ostavi zakomentarisano ako se ne koristi
 
 const AppError = require('./utils/errorHandler').AppError; // Proveri putanju ako ne postoji
@@ -37,6 +40,9 @@ app.use('/api/auth', authRoutes); // Postavi auth rute
 app.use('/api/users', userRoutes);
 app.use('/api/owners', ownerRoutes);
 app.use('/api/salons', salonRoutes);
+app.use('/api/appointments', appointmenRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/employees', employeeRoutes);
 
 // OPREZ: Ruta '/salons/:salonId/users' unutar userRoutes.js
 // Kao što je ranije sugerisano, preporučljivo je premestiti `router.get('/salons/:salonId/users', userController.getUsersBySalon);`
