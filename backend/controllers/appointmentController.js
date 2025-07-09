@@ -221,7 +221,7 @@ exports.cancelAppointment = catchAsync(async (req, res, next) => {//nema potrebe
 // const godisnji=employee.vacationDates
 // //nadji zauzete termine
 // //const zauzetiTermini=await Appointment.find(salonId,employeeId,status= 'confirmed'|| 'pending')
-// const occupiedAppointments = await Appointment.find({ salonId, employeeId, status: { $in: ['confirmed', 'pending'] },
+// //const occupiedAppointments = await Appointment.find({ salonId, employeeId, status: { $in: ['confirmed', 'pending'] },})
 // // status je niz u $in // Dodaj logiku za trazeni datum. Npr., termini ciji je endTime posle pocetka trazenog dana 
 // // // i ciji je startTime pre kraja trazenog dana. // startDateOfDay: new Date('2025-07-08T00:00:00.000Z') 
 // // // endDateOfDay: new Date('2025-07-08T23:59:59.999Z') // startTime: { $lt: endDateOfDay }, 
