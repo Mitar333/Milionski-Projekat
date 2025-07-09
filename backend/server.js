@@ -16,9 +16,9 @@ const userRoutes = require('./routes/userRoutes');
 const ownerRoutes = require('./routes/ownerRoutes');
 const salonRoutes = require('./routes/salonRoutes');
 const authRoutes = require('./routes/authRoutes');
-const appointmenRoutes = require('./routes/appointmenRoutes');
+const appointmenRoutes = require('./routes/appointmentRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
-const employeeRoutes = require('./routes/employeeRoutes'); // Uvezi auth rute
+const employeeRoutes = require('./routes/employeeRoutes'); 
 // const ApointmentRoutes = require('./routes/ApointmentRoutes'); // Ostavi zakomentarisano ako se ne koristi
 
 const AppError = require('./utils/errorHandler').AppError; // Proveri putanju ako ne postoji

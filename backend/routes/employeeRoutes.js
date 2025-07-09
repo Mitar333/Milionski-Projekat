@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const employeController = require('../controllers/employeController');
+const employeeController = require('../controllers/employeeController');
 
 
-router.get("api/salons/:salonId/employees", employeController.getEmployeesBySalon);
-router.post("api/employees", employeController.addEmployee);
-router.patch("api/employees/:id", employeController.updateEmployee);
-router.delete("api/employees/:id", employeController.deleteEmployee);
-router.patch("api/employees/:id/vacation", employeController.setEmployeeVacation);
+router.get("/salons/:salonId/employees", employeeController.getEmployeesBySalon);
+router.post("/employees", employeeController.addEmployee);
+router.patch("/employees/:id", employeeController.updateEmployee);
+router.delete("/employees/:id", employeeController.deleteEmployee);
+router.patch("/employees/:id/vacation", employeeController.addEmployeeVacationDate);
 
 
  module.exports = router;
