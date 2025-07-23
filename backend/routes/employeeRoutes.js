@@ -4,10 +4,10 @@ const employeeController = require('../controllers/employeeController');
 
 
 router.get("/salons/:salonId/employees", employeeController.getEmployeesBySalon);
-router.post("/employees", employeeController.addEmployee);
-router.patch("/employees/:id", employeeController.updateEmployee);
-router.delete("/employees/:id", employeeController.deleteEmployee);
-router.patch("/employees/:id/vacation", employeeController.addEmployeeVacationDate);
+router.post("/", employeeController.addEmployee);
+router.patch("/:id", employeeController.updateEmployee);
+router.delete("/:id", employeeController.deleteEmployee);
+router.patch("/:id/vacation", employeeController.addEmployeeVacationDate);
 
 
  module.exports = router;
