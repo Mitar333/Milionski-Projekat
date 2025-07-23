@@ -19,7 +19,7 @@ exports.getServicesBySalon = catchAsync(async (req, res, next) => {
 });
 
 exports.addService = catchAsync(async (req, res, next) => {
-    const { salonId, name, durationMinutes, price, description, isActive } = req.body;
+    const { salonId, name, durationMinutes, price, description } = req.body;
 
     const existingService = await Service.findOne({ salonId, name });
     if (existingService) {
@@ -32,7 +32,7 @@ exports.addService = catchAsync(async (req, res, next) => {
         durationMinutes,
         price,
         description,
-        isActive
+        isActive:true
     });
 
     const service = await newService.save();

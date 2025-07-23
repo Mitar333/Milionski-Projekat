@@ -3,9 +3,9 @@ const router = express.Router();
 const serviceController = require('../controllers/serviceController');
 
 router.get('/salons/:salonId/services', serviceController.getServicesBySalon);
-router.post('/services', serviceController.addService);
-router.patch('/services/:id', serviceController.updateService);
-router.delete('/services/:id', serviceController.deleteService);
+router.post('/', serviceController.addService);
+router.patch('/:id', serviceController.updateService);
+router.delete('/:id', serviceController.deleteService);
 
 
  module.exports = router;
