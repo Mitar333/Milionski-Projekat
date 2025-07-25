@@ -31,7 +31,7 @@ const EmployeeSchema = new mongoose.Schema({
         required: true,
         lowercase: true,
         trim: true,
-        match: [/.+@.+\\..+/, 'Please fill a valid email address']
+       // match: [/.+@.+\\..+/, 'Please fill a valid email address']
     },
     password: {
         type: String,
@@ -44,10 +44,26 @@ const EmployeeSchema = new mongoose.Schema({
         ref: 'Service'
     }],
     schedule: {
-        type: Map,
-        of: String,
-        default: {}
-    },
+    type: Map,
+     of: new mongoose.Schema({
+         // Vrijeme otvaranja (npr. "09:00")
+         start: {
+             type: String,
+             // required: true, // Može biti opcionalno ako dani mogu biti zatvoreni
+             match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/ // Regex za HH:MM format
+         },
+         // Vrijeme zatvaranja (npr. "17:00")
+         end: {
+             type: String,
+             // required: true, // Može biti opcionalno
+             match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
+         },
+         // Dodatno polje za lakše prepoznavanje je li dan zatvoren
+         isClosed: {
+             type: Boolean,
+             default: false
+         }
+        })},
     // Dodato za resetovanje lozinke
     passwordResetToken: String,
     passwordResetExpires: Date

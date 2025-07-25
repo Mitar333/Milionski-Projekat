@@ -20,7 +20,7 @@ exports.getEmployeesBySalon = catchAsync(async (req, res, next) => {
 });
 
 exports.addEmployee = catchAsync(async (req, res, next) => {
-    const { salonId, name, bio, phone, email, password, schedule, vacationDates } = req.body;
+    const { salonId, name, bio, phone, email, password, schedule, servicesOffered } = req.body;
 
     const existingEmployee = await Employee.findOne({ email });
     if (existingEmployee) {
@@ -41,7 +41,7 @@ exports.addEmployee = catchAsync(async (req, res, next) => {
         email,
         password: hashedPassword,
         schedule,
-        vacationDates
+        servicesOffered
     });
 
     const employee = await newEmployee.save();

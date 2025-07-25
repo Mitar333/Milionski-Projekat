@@ -110,11 +110,11 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
         return next(new AppError('Invalidan user ID.',400))
     }
 
-    const user = await User.findByIdAndDelete(id);
+    // const user = await User.findByIdAndDelete(id);
 
-    if (!user) {
-        return next(new AppError('User nije pronadjen.',404))
-    }
+    // if (!user) {
+    //     return next(new AppError('User nije pronadjen.',404))
+    // }
     
     res.status(204).json({
         status: 'success',

@@ -14,7 +14,7 @@ const {
 } = require('date-fns');
 
 exports.createAppointment = catchAsync(async (req, res, next) => {
-   const { salonId, userId, employeeId,serviceId, startTime, endTime, status,notes,isReminderSent } = req.body;
+   const { salonId, userId, employeeId,serviceId, startTime, endTime, status,notes } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(salonId)||!mongoose.Types.ObjectId.isValid(userId)||!mongoose.Types.ObjectId.isValid(employeeId)||!mongoose.Types.ObjectId.isValid(serviceId)) {
         return next(new AppError('Invalidan ID', 400));
@@ -49,7 +49,7 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
         endTime,
         status,
         notes,
-        isReminderSent
+        isReminderSent:false
     });
 
     const appointment = await newAppointment.save();
@@ -212,7 +212,7 @@ exports.cancelAppointment = catchAsync(async (req, res, next) => {//nema potrebe
 
 
 exports.getAvailableTimes = catchAsync(async (req, res, next) => {
-    const { salonId, employeeId, date, serviceId } = req.query; // Predpostavljamo da dolaze kao query parametri
+    const { salonId, employeeId, date, serviceId } = req.body; // Predpostavljamo da dolaze kao query parametri
 
     // Validacije ulaznih ID-eva
     if (!mongoose.Types.ObjectId.isValid(salonId) || !mongoose.Types.ObjectId.isValid(employeeId) || !mongoose.Types.ObjectId.isValid(serviceId)) {

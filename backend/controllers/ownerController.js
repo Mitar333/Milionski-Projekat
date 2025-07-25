@@ -132,7 +132,7 @@ exports.changeOwnersPassword = async (req, res) => {
       return res.status(404).json({ message: 'Owner nije pronadjen.' });
     }
 
-    const isMatch = await bcrypt.compare(oldPassword, owner.password);
+    const isMatch = await bcrypt.compare(oldPassword, owner.password);//owner.password je undefined
     if (!isMatch) {
       return res.status(401).json({ message: 'Stara lozinka nije ispravna.' });
     }
