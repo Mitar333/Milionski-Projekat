@@ -35,28 +35,99 @@ const salonSchema = new Schema({
         maxLength: 2000
     },
     workingHours: {
-    type: Map,
-    of: new mongoose.Schema({
-        // Vrijeme otvaranja (npr. "09:00")
-        start: {
-            type: String,
-            // required: true, // Može biti opcionalno ako dani mogu biti zatvoreni
-            match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/ // Regex za HH:MM format
-        },
-        // Vrijeme zatvaranja (npr. "17:00")
-        end: {
-            type: String,
-            // required: true, // Može biti opcionalno
-            match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
-        },
-        // Dodatno polje za lakše prepoznavanje je li dan zatvoren
-        isClosed: {
-            type: Boolean,
-            default: false
-        }
-    }, { _id: false }), // _id: false da ne kreira _id za poddokumente u mapi
-    default: {}
-},
+        monday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},
+        tuesday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        wednesday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        thursday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        friday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        saturday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        sunday:
+        {
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: false
+            }
+        }},
     description: {
         type: String,
         trim: true,
@@ -71,3 +142,99 @@ const salonSchema = new Schema({
 // });
 
 module.exports = mongoose.model('Salon', salonSchema);
+/*
+workingHours: {
+        monday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},
+        tuesday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        wednesday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        thursday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        friday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        saturday:{
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: true
+            }},        
+        sunday:
+        {
+            start: {
+                type: Date,
+                required: true,
+            },
+            end: {
+                type: Date,
+                required: true,
+            },
+            isOpen: {
+                type: Boolean,
+                default: false
+            }
+        }
+*/

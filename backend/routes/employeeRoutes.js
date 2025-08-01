@@ -7,7 +7,8 @@ router.get("/salons/:salonId/employees", employeeController.getEmployeesBySalon)
 router.post("/", employeeController.addEmployee);
 router.patch("/:id", employeeController.updateEmployee);
 router.delete("/:id", employeeController.deleteEmployee);
-router.patch("/:id/vacation", employeeController.addEmployeeVacationDate);
-
+//router.patch("/:id/vacation", employeeController.addEmployeeVacationDate);
+router.post("/:id",employeeController.addEmployeeSchedule)
+router.patch("/:id/:scheduleId",employeeController.editEmployeeSchedule)
 
  module.exports = router;

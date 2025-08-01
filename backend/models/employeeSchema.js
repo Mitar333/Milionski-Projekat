@@ -43,27 +43,26 @@ const EmployeeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Service'
     }],
-    schedule: {
-    type: Map,
-     of: new mongoose.Schema({
-         // Vrijeme otvaranja (npr. "09:00")
-         start: {
-             type: String,
-             // required: true, // Može biti opcionalno ako dani mogu biti zatvoreni
-             match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/ // Regex za HH:MM format
-         },
-         // Vrijeme zatvaranja (npr. "17:00")
-         end: {
-             type: String,
-             // required: true, // Može biti opcionalno
-             match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
-         },
-         // Dodatno polje za lakše prepoznavanje je li dan zatvoren
-         isClosed: {
-             type: Boolean,
-             default: false
-         }
-        })},
+    schedule: [{
+        startTime: {
+            type: Date,
+            //required: true
+        },
+        endTime: {
+            type: Date,
+            //required: true
+        },
+        isWorking: {
+            type: Boolean,
+            default: true
+        },
+        dayOfWeek:{
+            type:Number,
+            //required: true
+        },
+        default:[]
+    },
+],
     // Dodato za resetovanje lozinke
     passwordResetToken: String,
     passwordResetExpires: Date
@@ -82,3 +81,19 @@ EmployeeSchema.index({ salonId: 1, phone: 1 }, { unique: true, sparse: true });
 // });
 
 module.exports = mongoose.model('Employee', EmployeeSchema);
+/*
+schedule: [{
+         startTime: {
+             type: Date,
+             required: true
+         },
+         endTime: {
+             type: String,
+             required: true
+         },
+         isWorking: {
+             type: Boolean,
+             default: true
+         }
+}]
+         */

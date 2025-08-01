@@ -27,15 +27,11 @@ const AppointmentSchema = new mongoose.Schema({
         index: true // DOBRO: dodaj indeks za brže pretrage po usluzi
     },
     startTime: {
-            type: String,
-            // required: true, // Može biti opcionalno ako dani mogu biti zatvoreni
-            match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, // Regex za HH:MM format
+        type: Date,
         required: true
     },
     endTime: {
-                    type: String,
-            // required: true, // Može biti opcionalno ako dani mogu biti zatvoreni
-            match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, // Regex za HH:MM format
+        type: Date,
         required: true
     },
     status: {

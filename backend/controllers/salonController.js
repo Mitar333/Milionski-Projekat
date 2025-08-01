@@ -35,7 +35,36 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: fileFilter
 });
+const convertWorkingHoursToDate=(wh,next)=>{
+//ocekujem da postoji wh.monday...
+if(!wh || !wh.monday || !wh.tuesday || !wh.wednesday || !wh.thursday|| !wh.friday || !wh.saturday || !wh.sunday){return next(AppError("Neispravan format wh",400))}
+if(!wh.monday.startTime){return next(AppError("Neispravan format wh2",400))}
+//format wh valja
+let new_wh={
+  monday:{},
+  tuesday:{},
+  wednesday:{},
+  thursday:{},
+  friday:{},
+  saturday:{},
+  sunday:{},
+}
 
+Object.keys(new_wh).forEach(day=>{
+  if(wh[day].isOpen){//za dane kada salon radi
+  
+  let [startH,startM]=wh[day].startTime.split(":").map(Number)
+  let [endH,endM]=wh[day].endTime.split(":").map(Number)
+  new_wh[day].startTime=new Date(Date.UTC(2000,0,1,startH,startM,0,0))
+  new_wh[day].endTime=new Date(Date.UTC(2000,0,1,endH,endM,0,0))
+  new_wh[day].isOpen=true}else{
+  //za dane kada salon ne radi
+  new_wh[day].startTime=null
+  new_wh[day].endTime=null
+  new_wh[day].isOpen=false}
+  return new_wh
+});
+}
 
 // za pravljenje novog salona
 //////////////////////// TREBA ZASTITITI JER OVO BI TREBALO DA BUDE DOSTUPNO SAMO OWNERU SALONA ILI ADMINU ////////////////////////
@@ -48,13 +77,13 @@ exports.addSalon =catchAsync( async (req, res,next) => {
       
       return next(new AppError( 'Salon sa ovim imenom ili emailom vec postoji.',400))
     }
-
+    let newWH=convertWorkingHoursToDate(workingHours,next)//u bazu ne idu stringovi ali sa frontenda dolaze
     const newSalon = new Salon({
       name,
       address,
       phone,
       email,
-      workingHours,
+      workingHours:newWH,
       description
     });
 
@@ -117,12 +146,13 @@ exports.updateSalonDetails =catchAsync( async (req, res,next) => {
       
     }
 
-    const salonIdToUpdate = owner.salonIds[0]; // Nije bas dobro ako owner ima vise salona, ali ajd za sad ce mo ovako
+    const salonIdToUpdate = owner.salonIds[0]; // Nije bas dobro ako owner ima vise salona, ali ajd za sad cemo ovako
                                             
     if (!salonIdToUpdate || !mongoose.Types.ObjectId.isValid(salonIdToUpdate)) {
       return next(new AppError( 'Nema povezanog salona za updateovanje ili ID je nevalidan.',400))
         
     }
+    if(updateData.workingHours){updateData.workingHours=convertWorkingHoursToDate(updateData.workingHours,next)}//u bazu ne idu stringovi ali sa frontenda dolaze
 
     delete updateData._id;
     delete updateData.createdAt;

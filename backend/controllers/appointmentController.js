@@ -12,9 +12,21 @@ const {
     isSameDay, isBefore, isAfter, // Za poredenje datuma
     format, parseISO // Za formatiranje i parsiranje datuma
 } = require('date-fns');
+const regex=/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
+const regex2=/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
+const convertAppointmentHoursToDate=(str,date,next)=>{
+    if(!str){return next(new AppError("obavezno upisati vrijeme",400))}
+    if(!regex.test(str)){return next(new AppError("Nepravilan format vremena",400))}
+    if(!date){return next(new AppError("obavezno upisati datum",400))}
+    if(!regex2.test(date)){return next(new AppError("Nepravilan format datuma",400))}
+    let [hour,min]=str.split(":").map(Number)
+    let[y,m,d]=date.split("-").map(Number)
+    m=m-1
+    return new Date(Date.UTC(y,m,d,hour,min,0,0))
+}
 
 exports.createAppointment = catchAsync(async (req, res, next) => {
-   const { salonId, userId, employeeId,serviceId, startTime, endTime, status,notes } = req.body;
+   const { salonId, userId, employeeId,serviceId, startTime, endTime, status,notes,date } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(salonId)||!mongoose.Types.ObjectId.isValid(userId)||!mongoose.Types.ObjectId.isValid(employeeId)||!mongoose.Types.ObjectId.isValid(serviceId)) {
         return next(new AppError('Invalidan ID', 400));
@@ -39,14 +51,15 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
     if (conflictingAppointment) {
         return next(new AppError('Odabrani termin se preklapa sa postojećim terminom za ovog zaposlenog.', 400));
     }
-
+    let end=convertAppointmentHoursToDate(endTime,date,next)
+    let start=convertAppointmentHoursToDate(endTime,date,next)
     const newAppointment = new Appointment({
         salonId,
         userId,
         employeeId,
         serviceId,
-        startTime,
-        endTime,
+        startTime:start,
+        endTime:end,
         status,
         notes,
         isReminderSent:false
@@ -179,7 +192,13 @@ exports.updateAppointment = catchAsync(async (req, res, next) => {
         // Npr: const conflictingAppointment = await Appointment.findOne({ employeeId: updatedAppointment.employeeId, _id: { $ne: id }, ... })
         return next(new AppError('Za ažuriranje vremena termina koristite specifičnu rutu ili dodajte logiku provjere preklapanja.', 400)); // Ili implementirajte logiku
     }
-
+    if((updateData.startTime||updateData.endTime)&&!updateData.date){
+        delete updateData.startTime
+        delete updateData.endTime
+    }
+    if(updateData.startTime){updateData.startTime=convertAppointmentHoursToDate(updateData.startTime,updateData.date,next)}
+    if(updateData.endTime){updateData.endTime=convertAppointmentHoursToDate(updateData.endTime,updateData.date,next)}
+// if(updateData.workingHours){updateData.workingHours=convertWorkingHoursToDate(workingHours,next)}//u bazu ne idu stringovi ali sa frontenda dolaze
     const updatedAppointment = await Appointment.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
 
     if (!updatedAppointment) {
