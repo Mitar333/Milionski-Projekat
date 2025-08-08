@@ -10,7 +10,8 @@ const {
     addMinutes, addHours, // Za dodavanje vremena
     isWithinInterval,     // Za provjeru preklapanja intervala
     isSameDay, isBefore, isAfter, // Za poredenje datuma
-    format, parseISO // Za formatiranje i parsiranje datuma
+    format, parseISO, // Za formatiranje i parsiranje datuma
+    nextFriday,isEqual
 } = require('date-fns');
 const regex=/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
 const regex2=/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
@@ -231,128 +232,76 @@ exports.cancelAppointment = catchAsync(async (req, res, next) => {//nema potrebe
 
 
 exports.getAvailableTimes = catchAsync(async (req, res, next) => {
-    const { salonId, employeeId, date, serviceId } = req.body; // Predpostavljamo da dolaze kao query parametri
-
-    // Validacije ulaznih ID-eva
-    if (!mongoose.Types.ObjectId.isValid(salonId) || !mongoose.Types.ObjectId.isValid(employeeId) || !mongoose.Types.ObjectId.isValid(serviceId)) {
-        return next(new AppError('Invalidan ID (salon, radnik ili usluga).', 400));
+ let {date}=req.body //yyyy/mm/dd
+ let {salonId,employeeId,serviceId}=req.params
+let fDate=convertAppointmentHoursToDate("00:00",date,next)
+let pocetakDana=startOfDay(fDate)
+let krajDana=endOfDay(fDate)
+ //provjeriti req.params
+     if (!mongoose.Types.ObjectId.isValid(salonId)) {
+        return next(new AppError('Invalidan ID salona.', 400));
     }
-
-    const targetDate = parseISO(date); // Parsiraj string datuma u Date objekt
-    if (isNaN(targetDate.getTime())) { // Provjeri validnost datuma
-        return next(new AppError('Neispravan format datuma.', 400));
+    if (!mongoose.Types.ObjectId.isValid(employeeId)) {
+        return next(new AppError('Invalidan ID radnika.', 400));
     }
-
-    // Ovdje ces provjeriti da li salon, radnik i usluga stvarno postoje u bazi.
-    const employe = await Employee.findById(employeeId);
-    if (!employe) return next(new AppError('Zaposleni nije pronađen.', 404));
-        const servic = await Service.findById(employeeId);
-    if (!servic) return next(new AppError('Usluga nije pronađena.', 404));
-        const salo = await Salon.findById(employeeId);
-    if (!salo) return next(new AppError('Salon nije pronađen.', 404));
-
-
-    // Dohvati trajanje usluge iz service modela
-    const service = await Service.findById(serviceId);
-    const serviceDurationMinutes = service.durationMinutes; // Pretpostavljamo da imate ovo polje
-    const employee = await Employee.findById(employeeId);
+    if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+        return next(new AppError('Invalidan ID usluge.', 400));
+    }
+    let salon=await Salon.findById(salonId)
+    let employee=await Employee.findById(employeeId)
+    let service=await Service.findById(serviceId)
+    if(!salon){
+        return next(new AppError('Nije moguce pronaci salon u db', 400));
+    }
+    if(!employee){
+        return next(new AppError('Nije moguce pronaci radnika u db', 400));
+    }
+    if(!service){
+        return next(new AppError('Nije moguce pronaci uslugu u db', 400));
+    }
+ 
     
+ //uzeti sve apointmentove tog datum tog salona i radnika
 
-    // Dohvati raspored radnika za taj dan (moras implementirati logiku kako dobijas raspored za konkretan dan)
-    // Pretpostavimo da `employee.schedule` sadrzi radno vreme po danima (npr. { Monday: { start: '09:00', end: '17:00' } })
-    const dayOfWeek = format(targetDate, 'EEEE'); // 'Monday', 'Tuesday', itd.
-    const workingHours = employee.schedule.find(s => s.day === dayOfWeek); // Pretpostavimo da je schedule niz objekata
-    
-    if (!workingHours) {
-        return next(new AppError('Zaposleni nema definisano radno vreme za ovaj dan.', 404));
-    }
+    let appointments=await Appointment.find({
+        salonId:salonId,
+        employeeId:employeeId,
+        startTime:{$gt:pocetakDana,$lt:krajDana}
+    })
+  
+ //vratiti ostatak scheadule-a razbijenog na trajanje usluge
+let trajanje=service.durationMinutes
+let scheadule=employee.schedule.find((sch)=>{return isSameDay(sch.startTime,fDate)})
+if(!scheadule){
+    return next(AppError("Upisani datum pada na dan kada radnik ne radi",400))
+}
+let pocetak=scheadule.startTime
+let kraj=scheadule.endTime
+let tabelaMogucihTermina=[]
 
-    // Provjeri godišnje odmore
-    const isVacationDay = employee.vacationDates.some(vacationDate =>
-        isSameDay(parseISO(vacationDate), targetDate)
-    );
-    if (isVacationDay) {
-        return next(new AppError('Zaposleni je na godišnjem odmoru na odabrani datum.', 400));
-    }
+let pocetak2=pocetak
+while(isBefore(pocetak2,kraj)){
+    let kraj2=addMinutes(pocetak2,trajanje)
+    if(isBefore(kraj2,kraj)||isEqual(kraj2,kraj)){
+        tabelaMogucihTermina.push({
+            startTime:pocetak2,
+            endTime:kraj2
+})
+    } 
+pocetak2=kraj2
+}
 
-    // Dohvati SVE zauzete termine za tog radnika za TAJ dan
-    const startOfTargetDay = startOfDay(targetDate);
-    const endOfTargetDay = endOfDay(targetDate);
 
-    const occupiedAppointments = await Appointment.find({
-        employeeId: employeeId,
-        $or: [
-            // Termini koji počinju unutar ciljanog dana (od 00:00:00 do 23:59:59)
-            { startTime: { $gte: startOfTargetDay, $lte: endOfTargetDay } },
-            // Termini koji se završavaju unutar ciljanog dana
-            { endTime: { $gte: startOfTargetDay, $lte: endOfTargetDay } },
-            // Termini koji obuhvataju cijeli ciljani dan
-            { startTime: { $lt: startOfTargetDay }, endTime: { $gt: endOfTargetDay } }
-        ],
-        status: { $in: ['confirmed', 'pending', 'booked'] } // Statusi koji oznacavaju zauzetost
-    });
-    // ... unutar exports.getAvailableTimes funkcije
+let slobodniTermini=tabelaMogucihTermina.filter((termin)=>{
+    let daLiJeSlobodan=appointments.some((app)=>{
+        return (isBefore(termin.startTime,app.endTime)&&isAfter(termin.endTime,app.startTime))
+    })
 
-    // Konvertuj radno vreme u Date objekte za taj dan
-    const [startHour, startMinute] = workingHours.start.split(':').map(Number);
-    const [endHour, endMinute] = workingHours.end.split(':').map(Number);
+    return !daLiJeSlobodan
+})
 
-    let currentSlot = new Date(targetDate);
-    currentSlot = addHours(currentSlot, startHour);
-    currentSlot = addMinutes(currentSlot, startMinute); // Pocetak radnog vremena
-
-    const endWorkingTime = new Date(targetDate);
-    endWorkingTime = addHours(endWorkingTime, endHour);
-    endWorkingTime = addMinutes(endWorkingTime, endMinute); // Kraj radnog vremena
-
-    const availableSlots = [];
-    const interval = 15; // Interval u minutama za generisanje slotova (npr. svakih 15 minuta)
-
-    while (isBefore(currentSlot, endWorkingTime)) {
-        const slotEndTime = addMinutes(currentSlot, serviceDurationMinutes);
-
-        // Provjeri da li slot prelije van radnog vremena
-        if (isAfter(slotEndTime, endWorkingTime)) {
-            break; // Ako se usluga ne uklapa do kraja radnog vremena, prekinuti
-        }
-
-        let isSlotAvailable = true;
-
-        // Provjeri preklapanje sa svakim zauzetim terminom
-        for (const appointment of occupiedAppointments) {
-            const appointmentStart = appointment.startTime;
-            const appointmentEnd = appointment.endTime;
-
-            const slotInterval = { start: currentSlot, end: slotEndTime };
-            const appointmentInterval = { start: appointmentStart, end: appointmentEnd };
-
-            // isWithinInterval provjerava da li je jedan interval unutar drugog, ili se preklapaju
-            // Potrebno je malo kompleksnija provera preklapanja:
-            // Termin se preklapa ako:
-            // 1. Pocetak novog slota je izmedju pocetka i kraja zauzetog termina (ili obrnuto)
-            // 2. Kraj novog slota je izmedju pocetka i kraja zauzetog termina
-            // 3. Novi slot u potpunosti obuhvata zauzeti termin
-            // 4. Zauzeti termin u potpunosti obuhvata novi slot
-            if (
-                // (Start of new slot is within occupied) OR (End of new slot is within occupied) OR (New slot encompasses occupied) OR (Occupied encompasses new slot)
-                (isAfter(currentSlot, appointmentStart) && isBefore(currentSlot, appointmentEnd)) ||
-                (isAfter(slotEndTime, appointmentStart) && isBefore(slotEndTime, appointmentEnd)) ||
-                (isBefore(currentSlot, appointmentStart) && isAfter(slotEndTime, appointmentEnd)) ||
-                (isBefore(appointmentStart, currentSlot) && isAfter(appointmentEnd, slotEndTime))
-            ) {
-                isSlotAvailable = false;
-                break;
-            }
-        }
-
-        if (isSlotAvailable) {
-            availableSlots.push(format(currentSlot, 'yyyy-MM-dd HH:mm')); // Formatiraj za frontend
-        }
-
-        currentSlot = addMinutes(currentSlot, interval); // Idi na sledeći slot
-    }
-
-    res.status(200).json(availableSlots);
+//tabelaMogucihTermina
+res.status(200).json(slobodniTermini);
 });
 
     
