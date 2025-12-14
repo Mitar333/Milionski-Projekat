@@ -16,13 +16,11 @@ const routes = [
       ]),
     ]),
 
-    //na razmatranju da li je :step neophodan; potreban layout
     route("/inbox", "../pages/UserInbox.jsx"), //postansko sanduce svakog usera
     route("/appointments", "../pages/UserAppointments.jsx"), //svi zakazani termini usera ((C)RUD)
 
     ...prefix("settings", [
       layout("../pages/UserSettingsLayout.jsx", [
-        //NEMAJU
         index("../features/user/settings/SettingsOverview.jsx"), //pregled svega sto je moguce modifikovati
         route("/history", "../features/user/settings/History.jsx"), //pregled svih termina koje je user dotad rezervisao
         route("/privacy-policy", "../features/user/settings/PrivacyPolicy.jsx"), //zasad generican
