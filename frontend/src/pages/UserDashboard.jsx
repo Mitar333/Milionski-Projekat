@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 const termini = [
   {
@@ -14,25 +16,30 @@ function UserDashboard() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* HEADER */}
-      <header className="px-4 py-3 bg-white shadow-sm">
-        <h1 className="text-lg font-semibold">Dashboard</h1>
-      </header>
+      <Header />
 
       {/* MAIN */}
-      <main className="flex-1 px-4 py-6 space-y-6">
+      <main className="flex-1 px-4 py-6 flex flex-col">
+        {/* Gornji sadržaj */}
         <div className="space-y-2">
           <p className="text-gray-700">Pozdrav, USER 👋</p>
+        </div>
 
+        {/* Dugme dole */}
+        <div className="my-48 flex">
           <Link
             to="/select/salon"
-            className="inline-block w-full text-center bg-indigo-500 text-white py-3 rounded-xl font-medium"
+            className="mx-auto w-72 text-center bg-indigo-500 text-white py-2.5 rounded-xl font-medium text-sm"
           >
             Zakaži termin
           </Link>
         </div>
 
-        <div className="space-y-3">
-          <h2 className="font-medium text-gray-900">Aktivni termini</h2>
+        {/* Aktivni termini */}
+        <div className="mt-8 space-y-3">
+          <h2 className="flex-1 text-center font-medium text-gray-900">
+            <span>Aktivni termini</span>
+          </h2>
 
           <ul className="space-y-3">
             {termini.map((termin, index) => (
@@ -43,9 +50,7 @@ function UserDashboard() {
       </main>
 
       {/* FOOTER */}
-      <footer className="px-4 py-3 bg-white text-center text-sm text-gray-500">
-        footer
-      </footer>
+      <Footer />
     </div>
   );
 }
@@ -55,19 +60,21 @@ export default UserDashboard;
 export function AppointmentRow({ termin }) {
   return (
     <li className="bg-white rounded-2xl p-4 shadow-sm flex flex-wrap gap-3 text-sm text-gray-700">
-      <p>
+      <p className="flex-1 text-center">
         <span className="font-medium">Radnik:</span> {termin.employeeId}
       </p>
-      <p>
+      <p className="flex-1 text-center">
         <span className="font-medium">Usluga:</span> {termin.serviceId}
       </p>
-      <p>
+      <p className="flex-1 text-center">
         <span className="font-medium">Početak:</span> {termin.startTime}
       </p>
-      <p>
+      <p className="flex-1 text-center">
         <span className="font-medium">Kraj:</span> {termin.endTime}
       </p>
-      <p className="text-green-600 font-medium">{termin.status}</p>
+      <p className="flex-1 text-center text-green-600 font-medium">
+        {termin.status}
+      </p>
     </li>
   );
 }
