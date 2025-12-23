@@ -7,3 +7,12 @@ body,
   margin: 0;
   padding: 0;
 }
+/* Dodaj ovo u svoj CSS fajl */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Za Chrome, Safari i Operu */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* Za IE i Edge */
+  scrollbar-width: none; /* Za Firefox */
+}

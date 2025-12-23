@@ -56,6 +56,12 @@ type Pages = {
   "/admin/salon-details": {
     params: {};
   };
+  "/admin/salon-details/services-details": {
+    params: {};
+  };
+  "/admin/salon-details/employees-details": {
+    params: {};
+  };
   "/admin/working-hours": {
     params: {};
   };
@@ -72,7 +78,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/history" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/table-details" | "/admin/salon-details" | "/admin/working-hours" | "/admin/archive" | "/*";
+    page: "/" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/history" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/table-details" | "/admin/salon-details" | "/admin/salon-details/services-details" | "/admin/salon-details/employees-details" | "/admin/working-hours" | "/admin/archive" | "/*";
   };
   "../pages/UserDashboard.jsx": {
     id: "../pages/UserDashboard";
@@ -142,6 +148,14 @@ type RouteFiles = {
     id: "../pages/SalonDetails";
     page: "/admin/salon-details";
   };
+  "../components/App.jsx": {
+    id: "../components/App";
+    page: "/admin/salon-details/services-details";
+  };
+  "../components/App2.jsx": {
+    id: "../components/App2";
+    page: "/admin/salon-details/employees-details";
+  };
   "../pages/WorkingHours.jsx": {
     id: "../pages/WorkingHours";
     page: "/admin/working-hours";
@@ -175,6 +189,8 @@ type RouteModules = {
   "../pages/AdminDasboard": unknown;
   "../pages/AppointmentTable": unknown;
   "../pages/SalonDetails": unknown;
+  "../components/App": unknown;
+  "../components/App2": unknown;
   "../pages/WorkingHours": unknown;
   "../pages/Archive": unknown;
   "../components/NotFound": unknown;

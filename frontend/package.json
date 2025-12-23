@@ -13,6 +13,7 @@
     "@react-router/dev": "^7.10.1",
     "@react-router/node": "^7.10.1",
     "@tailwindcss/vite": "^4.1.18",
+    "date-fns": "^4.1.0",
     "isbot": "^5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

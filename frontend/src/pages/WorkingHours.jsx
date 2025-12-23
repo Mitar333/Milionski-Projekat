@@ -1,5 +1,5 @@
 function WorkingHours() {
-  return <div>WorkingHours</div>;
+  return <div>To be implemented</div>;
 }
 
 export default WorkingHours;

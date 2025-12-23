@@ -9,7 +9,6 @@ const routes = [
     index("../pages/UserDashboard.jsx"), //user dashboard
     ...prefix("select", [
       layout("../pages/SelectLayout.jsx", [
-        index("../features/user/select/SettingsOverview.jsx"),
         route("/salon", "../features/user/select/SelectSalon.jsx"), //odabir salona (ako je fransiza,ako nije onda se skipuje za usera)
         route("/employee", "../features/user/select/SelectEmployee.jsx"), //odabir radnika (ako je veci salon,ako nije onda se skipuje za usera)
         route("/service", "../features/user/select/SelectService.jsx"), //odabir usluge koju salon nudi
@@ -23,6 +22,7 @@ const routes = [
 
     ...prefix("settings", [
       layout("../pages/UserSettingsLayout.jsx", [
+        index("../features/user/settings/SettingsOverview.jsx"),
         route("/history", "../features/user/settings/History.jsx"), //pregled svih termina koje je user dotad rezervisao
         route("/privacy-policy", "../features/user/settings/PrivacyPolicy.jsx"), //zasad generican
         route("/faq", "../features/user/settings/Faq.jsx"), //zasad generican
@@ -33,9 +33,14 @@ const routes = [
 
   ...prefix("/admin", [
     index("../pages/AdminDasboard.jsx"), //admin dashboard
-    route("/table-details", "../pages/AppointmentTable.jsx"), //detaljnija tabela dana
-    route("/salon-details", "../pages/SalonDetails.jsx"), //upravljanje podacima usluga i radnika
-    route("/working-hours", "../pages/WorkingHours.jsx"), //upravljanje radnim vremenom radnika
+    route("/table-details", "../pages/AppointmentTable.jsx"), //detaljnija tabela dana NISAM IMPLEMENTIRAO
+    ...prefix("/salon-details", [
+      index("../pages/SalonDetails.jsx"),
+      route("/services-details", "../components/App.jsx"),
+      route("/employees-details", "../components/App2.jsx"),
+    ]), //upravljanje podacima usluga i radnika
+
+    route("/working-hours", "../pages/WorkingHours.jsx"), //upravljanje radnim vremenom radnika NISAM IMPLEMENTIRAO
     route("/archive", "../pages/Archive.jsx"), //Lijepa tabela sa pregledom svakog dana sa radnikom, usluzenim klijentima i ostalim neophodnim parametrima
   ]), //admin dashboard
 
