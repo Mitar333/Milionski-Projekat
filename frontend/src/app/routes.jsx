@@ -13,7 +13,6 @@ const routes = [
         route("/employee", "../features/user/select/SelectEmployee.jsx"), //odabir radnika (ako je veci salon,ako nije onda se skipuje za usera)
         route("/service", "../features/user/select/SelectService.jsx"), //odabir usluge koju salon nudi
         route("/appointment", "../features/user/select/SelectAppointment.jsx"), //odabir termina koji pase korisniku
-        //NISAM URADIO
       ]),
     ]),
 
@@ -32,16 +31,17 @@ const routes = [
   ]),
 
   ...prefix("/admin", [
-    index("../pages/AdminDasboard.jsx"), //admin dashboard
+    index("../pages/AdminDasboard.jsx"), //admin dashboard//NISAM IMPLEMENTIRAO
     route("/table-details", "../pages/AppointmentTable.jsx"), //detaljnija tabela dana NISAM IMPLEMENTIRAO
     ...prefix("/salon-details", [
-      index("../pages/SalonDetails.jsx"),
-      route("/services-details", "../components/App.jsx"),
-      route("/employees-details", "../components/App2.jsx"),
+      //NISAM IMPLEMENTIRAO
+      index("../pages/SalonDetails.jsx"), //NISAM IMPLEMENTIRAO
+      route("/services-details", "../components/App.jsx"), //NISAM IMPLEMENTIRAO
+      route("/employees-details", "../components/App2.jsx"), //NISAM IMPLEMENTIRAO
     ]), //upravljanje podacima usluga i radnika
 
     route("/working-hours", "../pages/WorkingHours.jsx"), //upravljanje radnim vremenom radnika NISAM IMPLEMENTIRAO
-    route("/archive", "../pages/Archive.jsx"), //Lijepa tabela sa pregledom svakog dana sa radnikom, usluzenim klijentima i ostalim neophodnim parametrima
+    route("/archive", "../pages/Archive.jsx"), //Lijepa tabela sa pregledom svakog dana sa radnikom, usluzenim klijentima i ostalim neophodnim parametrima//NISAM IMPLEMENTIRAO
   ]), //admin dashboard
 
   route("*", "../components/NotFound.jsx"),

@@ -110,9 +110,7 @@ function UserAppointments() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <ul className="divide-y divide-gray-50">
               {termini.slice(0, loadAmmount2).map((termin, index) => (
-                <li key={index} className="p-1">
-                  <AppointmentRow termin={termin} />
-                </li>
+                <AppointmentRow termin={termin} index={index} key={index} />
               ))}
             </ul>
           </div>
@@ -143,16 +141,14 @@ function UserAppointments() {
         <section className="mt-12">
           <div className="flex items-center mb-4 px-1">
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-widest">
-              Povijest termina
+              Istorija termina
             </h2>
           </div>
 
           <div className="bg-white/60 rounded-2xl border border-dashed border-gray-200 overflow-hidden">
             <ul className="divide-y divide-gray-100 opacity-80">
               {stariTermini.slice(0, loadAmmount).map((termin, index) => (
-                <li key={index} className="p-1 grayscale-[0.5]">
-                  <AppointmentRow termin={termin} />
-                </li>
+                <AppointmentRow termin={termin} key={index} index={index} />
               ))}
             </ul>
           </div>

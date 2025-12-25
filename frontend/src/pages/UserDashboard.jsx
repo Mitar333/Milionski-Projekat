@@ -57,9 +57,12 @@ function UserDashboard() {
 
 export default UserDashboard;
 
-export function AppointmentRow({ termin }) {
+export function AppointmentRow({ termin, index }) {
   return (
-    <li className="bg-white rounded-2xl p-4 shadow-sm flex flex-wrap gap-3 text-sm text-gray-700">
+    <li
+      className="bg-white rounded-2xl p-5 shadow-sm flex flex-wrap gap-3 text-sm text-gray-700"
+      key={index}
+    >
       <p className="flex-1 text-center">
         <span className="font-medium">Radnik:</span> {termin.employeeId}
       </p>

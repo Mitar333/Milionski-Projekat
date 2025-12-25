@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSalon } from "../../../store";
 
 const salons = [
   {
@@ -18,12 +19,13 @@ const salons = [
 
 function SelectSalon() {
   const navigate = useNavigate();
-
+  const setSalon = useSalon((state) => state.update);
   useEffect(() => {
     if (salons.length < 2) {
+      setSalon({ newSalon: salons.at(0) });
       navigate("/select/employee");
     }
-  }, [navigate]);
+  }, [navigate, setSalon]);
 
   return (
     <div className=" ">
@@ -51,6 +53,7 @@ function SelectSalon() {
             <Link
               to="/select/employee"
               className="mt-4 md:mt-0 bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors text-center"
+              onClick={() => setSalon({ newSalon: salons.at(index) })}
             >
               Izaberi salon
             </Link>

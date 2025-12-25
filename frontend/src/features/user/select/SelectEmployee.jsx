@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useEmployee } from "../../../store";
 
 const employees = [
   {
@@ -19,11 +20,13 @@ const employees = [
 function SelectEmployee() {
   const navigate = useNavigate();
 
+  const setEmployee = useEmployee((state) => state.update);
   useEffect(() => {
     if (employees.length < 2) {
+      setEmployee({ newEmployee: employees.at(0) });
       navigate("/select/service");
     }
-  }, [navigate]);
+  }, [navigate, setEmployee]);
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -53,6 +56,7 @@ function SelectEmployee() {
             <Link
               to="/select/service"
               className="w-full py-2 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+              onClick={() => setEmployee({ newEmployee: employees.at(index) })}
             >
               Izaberi radnika
             </Link>

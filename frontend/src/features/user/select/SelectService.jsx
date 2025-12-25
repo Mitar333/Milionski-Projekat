@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useService } from "../../../store";
 
 const services = [
   {
@@ -18,9 +19,10 @@ const services = [
 
 function SelectService() {
   const navigate = useNavigate();
-
+  const setService = useService((state) => state.update);
   useEffect(() => {
     if (services.length < 2) {
+      setService({ newService: services.at(0) });
       navigate("/select/appointment");
     }
   }, [navigate]);
@@ -74,6 +76,7 @@ function SelectService() {
               <Link
                 to="/select/appointment"
                 className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                onClick={() => setService({ newService: services.at(index) })}
               >
                 Izaberi uslugu
               </Link>

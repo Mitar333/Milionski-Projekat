@@ -1,0 +1,18 @@
+import { create } from "zustand";
+
+export const useAppointment = create((set) => ({
+  termin: { start: "", end: "", index: "", posible: false },
+  update: (newTermin) => set({ termin: newTermin }),
+}));
+export const useService = create((set) => ({
+  service: "",
+  update: (newService) => set({ service: newService }),
+}));
+export const useEmployee = create((set) => ({
+  employee: "",
+  update: (newEmployee) => set({ employee: newEmployee }),
+}));
+export const useSalon = create((set) => ({
+  salon: "",
+  update: (newSalon) => set({ salon: newSalon }),
+}));
