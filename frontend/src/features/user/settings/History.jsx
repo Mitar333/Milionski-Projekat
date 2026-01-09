@@ -1,4 +1,6 @@
-import { FaCut, FaCheckCircle } from "react-icons/fa";
+import { FaCut, FaCheckCircle, FaChevronLeft } from "react-icons/fa";
+import Footer from "../../../components/Footer";
+import Header from "../../../components/Header";
 
 const historyData = [
   {
@@ -26,38 +28,47 @@ const historyData = [
 
 function History() {
   return (
-    <div className="animate-fadeIn">
-      <h2 className="text-lg font-bold text-gray-800 mb-6">
-        Povijest tretmana
-      </h2>
-      <div className="space-y-4">
-        {historyData.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:shadow-sm transition-shadow"
-          >
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-gray-100 rounded-lg text-gray-500">
-                <FaCut />
+    <div>
+      <Header
+        to="/settings"
+        label={
+          <span className="flex items-center gap-2">
+            <FaChevronLeft />
+            <p className="px-2  text-2xl"> Istorija tretmana</p>
+          </span>
+        }
+      />
+      <div className="animate-fadeIn mt-8">
+        <div className="space-y-4">
+          {historyData.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:shadow-sm transition-shadow"
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-gray-100 rounded-lg text-gray-500">
+                  <FaCut />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-gray-800">
+                    {item.service}
+                  </h4>
+                  <p className="text-xs text-gray-500">
+                    {item.date} • {item.barber}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h4 className="text-sm font-bold text-gray-800">
-                  {item.service}
-                </h4>
-                <p className="text-xs text-gray-500">
-                  {item.date} • {item.barber}
-                </p>
+              <div className="text-right">
+                <p className="text-sm font-bold text-blue-600">{item.price}</p>
+                <div className="flex items-center gap-1 text-[10px] text-green-500 font-bold uppercase">
+                  <FaCheckCircle /> Plaćeno
+                </div>
               </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm font-bold text-blue-600">{item.price}</p>
-              <div className="flex items-center gap-1 text-[10px] text-green-500 font-bold uppercase">
-                <FaCheckCircle /> Plaćeno
-              </div>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 }

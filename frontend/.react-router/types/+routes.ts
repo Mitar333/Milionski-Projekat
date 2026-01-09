@@ -50,23 +50,30 @@ type Pages = {
   "/admin": {
     params: {};
   };
-  "/admin/table-details": {
-    params: {};
+  "/admin/:salonId": {
+    params: {
+      "salonId": string;
+    };
   };
-  "/admin/salon-details": {
-    params: {};
+  "/admin/:salonId/services-details": {
+    params: {
+      "salonId": string;
+    };
   };
-  "/admin/salon-details/services-details": {
-    params: {};
+  "/admin/:salonId/employees-details": {
+    params: {
+      "salonId": string;
+    };
   };
-  "/admin/salon-details/employees-details": {
-    params: {};
+  "/admin/:salonId/working-hours": {
+    params: {
+      "salonId": string;
+    };
   };
-  "/admin/working-hours": {
-    params: {};
-  };
-  "/admin/archive": {
-    params: {};
+  "/admin/:salonId/archive": {
+    params: {
+      "salonId": string;
+    };
   };
   "/*": {
     params: {
@@ -78,7 +85,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/history" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/table-details" | "/admin/salon-details" | "/admin/salon-details/services-details" | "/admin/salon-details/employees-details" | "/admin/working-hours" | "/admin/archive" | "/*";
+    page: "/" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/history" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/:salonId" | "/admin/:salonId/services-details" | "/admin/:salonId/employees-details" | "/admin/:salonId/working-hours" | "/admin/:salonId/archive" | "/*";
   };
   "../pages/UserDashboard.jsx": {
     id: "../pages/UserDashboard";
@@ -112,10 +119,6 @@ type RouteFiles = {
     id: "../pages/UserAppointments";
     page: "/appointments";
   };
-  "../pages/UserSettingsLayout.jsx": {
-    id: "../pages/UserSettingsLayout";
-    page: "/settings" | "/settings/history" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile";
-  };
   "../features/user/settings/SettingsOverview.jsx": {
     id: "../features/user/settings/SettingsOverview";
     page: "/settings";
@@ -136,33 +139,29 @@ type RouteFiles = {
     id: "../features/user/settings/Profile";
     page: "/settings/profile";
   };
-  "../pages/AdminDasboard.jsx": {
-    id: "../pages/AdminDasboard";
+  "../pages/AdminSelectSalon.jsx": {
+    id: "../pages/AdminSelectSalon";
     page: "/admin";
   };
-  "../pages/AppointmentTable.jsx": {
-    id: "../pages/AppointmentTable";
-    page: "/admin/table-details";
+  "../pages/AdminDasboard.jsx": {
+    id: "../pages/AdminDasboard";
+    page: "/admin/:salonId";
   };
-  "../pages/SalonDetails.jsx": {
-    id: "../pages/SalonDetails";
-    page: "/admin/salon-details";
+  "../pages/ServiceDetails.jsx": {
+    id: "../pages/ServiceDetails";
+    page: "/admin/:salonId/services-details";
   };
-  "../components/App.jsx": {
-    id: "../components/App";
-    page: "/admin/salon-details/services-details";
-  };
-  "../components/App2.jsx": {
-    id: "../components/App2";
-    page: "/admin/salon-details/employees-details";
+  "../pages/EmployeeDetails.jsx": {
+    id: "../pages/EmployeeDetails";
+    page: "/admin/:salonId/employees-details";
   };
   "../pages/WorkingHours.jsx": {
     id: "../pages/WorkingHours";
-    page: "/admin/working-hours";
+    page: "/admin/:salonId/working-hours";
   };
   "../pages/Archive.jsx": {
     id: "../pages/Archive";
-    page: "/admin/archive";
+    page: "/admin/:salonId/archive";
   };
   "../components/NotFound.jsx": {
     id: "../components/NotFound";
@@ -180,17 +179,15 @@ type RouteModules = {
   "../features/user/select/SelectAppointment": unknown;
   "../pages/UserInbox": unknown;
   "../pages/UserAppointments": unknown;
-  "../pages/UserSettingsLayout": unknown;
   "../features/user/settings/SettingsOverview": unknown;
   "../features/user/settings/History": unknown;
   "../features/user/settings/PrivacyPolicy": unknown;
   "../features/user/settings/Faq": unknown;
   "../features/user/settings/Profile": unknown;
+  "../pages/AdminSelectSalon": unknown;
   "../pages/AdminDasboard": unknown;
-  "../pages/AppointmentTable": unknown;
-  "../pages/SalonDetails": unknown;
-  "../components/App": unknown;
-  "../components/App2": unknown;
+  "../pages/ServiceDetails": unknown;
+  "../pages/EmployeeDetails": unknown;
   "../pages/WorkingHours": unknown;
   "../pages/Archive": unknown;
   "../components/NotFound": unknown;

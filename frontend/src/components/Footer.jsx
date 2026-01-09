@@ -2,13 +2,21 @@ import { Link, useLocation } from "react-router-dom";
 
 function Footer() {
   const location = useLocation();
-
-  // Pomoćna funkcija za provjeru aktivne rute (za bojanje ikona/teksta)
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname.startsWith(path);
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-100 pb-safe-area-inset-bottom">
-      <div className="max-w-2xl mx-auto flex justify-around items-center h-12 px-4">
+    <footer className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 pb-safe-area-inset-bottom shadow-lg">
+      <div className="max-w-2xl mx-auto flex justify-around items-center h-16 px-4">
+        <Link
+          to="/"
+          className={`flex flex-col items-center gap-1 transition-colors ${
+            location.pathname === "/"
+              ? "text-blue-600"
+              : "text-gray-400 hover:text-gray-600"
+          }`}
+        >
+          <span className="text-xs font-semibold">Pocetna</span>
+        </Link>
         <Link
           to="/inbox"
           className={`flex flex-col items-center gap-1 transition-colors ${

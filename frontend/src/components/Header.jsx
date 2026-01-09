@@ -9,7 +9,9 @@ function Header({ label, to = "/" }) {
   return (
     <Link to={to}>
       <header className="px-4 py-3 bg-white shadow-sm ">
-        <h1 className="text-2xl font-bold text-gray-800 ">{label1}</h1>
+        <h1 className="text-2xl font-bold text-gray-800 text-center ">
+          {label1}
+        </h1>
       </header>
     </Link>
   );

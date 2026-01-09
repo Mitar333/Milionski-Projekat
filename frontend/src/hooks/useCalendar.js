@@ -1,15 +1,15 @@
-import { getDay } from "date-fns";
+import { getDate, getDay } from "date-fns";
 import { useState } from "react";
 export const pet = ["", "", "", "", ""];
 export const sedam = ["", "", "", "", "", "", ""];
 export const daysOfWeek = {
+  0: "Nedjelja",
   1: "Ponedjeljak",
   2: "Utorak",
   3: "Srijeda",
   4: "Četvrtak",
   5: "Petak",
   6: "Subota",
-  0: "Nedjelja",
 };
 export const daysOfWeek2 = {
   0: "Ponedjeljak",
@@ -54,21 +54,58 @@ export function useCalendar() {
   if (max === 29 && isLeap) {
     max++;
   }
-  const prvaSedmica = [];
 
-  let datum = 1;
-  for (let i = 1; i < 8; i++) {
-    if (i < prviUMjesecu) {
-      prvaSedmica.push("");
-    } else {
-      prvaSedmica.push(datum);
-      datum += 1;
-    }
-  }
+  const prvaSedmica = prvaSedmicaa(year, month);
+  const prvaSedmicaSledecegMjeseca = prvaSedmicaa(
+    month === 11 ? year + 1 : year,
+    month === 11 ? 0 : month + 1
+  );
   const nedelja = prvaSedmica.at(6);
+  const nastavak =
+    day === 1 || day === 21 || day === 31
+      ? "vi"
+      : day === 2 || day === 22
+        ? "gi"
+        : day === 3 || day === 23
+          ? "ci"
+          : day === 8 || day === 28 || day === 7 || day === 27
+            ? "mi"
+            : "ti";
 
+  function prvaSedmicaa(y, m) {
+    let prviUMjesecu = getDay(new Date(y, m, 1));
+    if (prviUMjesecu === 0) prviUMjesecu = 7;
+    const prvaSedmica = zadnjaSedmicaa(y, m);
+    let datum = 1;
+    for (let i = 1; i < 8; i++) {
+      if (i >= prviUMjesecu) {
+        prvaSedmica.push(datum);
+        datum += 1;
+      }
+    }
+    return prvaSedmica;
+  }
+  function zadnjaSedmicaa(y, m) {
+    let prviUMjesecu = getDay(new Date(y, m, 1));
+    if (prviUMjesecu === 0) prviUMjesecu = 7;
+    const pozicijaZadnjegUMjesecu = prviUMjesecu === 1 ? 7 : prviUMjesecu - 1;
+    if (pozicijaZadnjegUMjesecu === 7) return []; //prvi pada u ponedjeljak 1
+    let zadnjiUMjesecu = getDate(
+      new Date(
+        m === 0 ? y - 1 : y,
+        m === 0 ? 11 : m - 1,
+        months[m === 0 ? 11 : m - 1].at(0)
+      )
+    );
+    return [...Array(zadnjiUMjesecu + 1).keys()].slice(
+      zadnjiUMjesecu - pozicijaZadnjegUMjesecu + 1
+    );
+  }
+  zadnjaSedmicaa(year, month);
   function handleNextMonth() {
     setActive("");
+    setDay("");
+    setDayOfWeek("");
     if (month === 11) {
       setYear((y) => y + 1);
       setMonth(0);
@@ -77,6 +114,8 @@ export function useCalendar() {
     }
   }
   function handlePrevMonth() {
+    setDay("");
+    setDayOfWeek("");
     setActive("");
     if (month === 0) {
       setMonth(11);
@@ -84,17 +123,28 @@ export function useCalendar() {
     } else setMonth((m) => m - 1);
   }
 
-  function handleSelectDay(dan, k) {
+  function handleSelectDay(dan, k, sledeci, prosli) {
     let k2 = k;
     if (k === 7) {
       k2 = 0;
     }
+    setActive(dan);
+    setDay(dan);
+    setDayOfWeek(k2);
+    if (prosli) {
+      if (month === 0) {
+        setMonth(11);
+        setYear((y) => y - 1);
+      } else setMonth((m) => m - 1);
+    } else if (sledeci) {
+      console.log(k2);
+      const dan2 = dan < max ? dan : dan - (max - 1);
+      setActive(dan2);
 
-    if (dan && dan < max) {
-      setActive(dan);
-
-      setDay(dan);
-      setDayOfWeek(k2);
+      if (month === 11) {
+        setMonth(0);
+        setYear((y) => y + 1);
+      } else setMonth((m) => m + 1);
     }
   }
 
@@ -105,13 +155,17 @@ export function useCalendar() {
     dayOfWeek,
     daysOfWeek,
     daysOfWeek2,
+    nastavak,
     month,
+
     year,
     active,
+    prviUMjesecu,
     max,
     nedelja,
     months,
     prvaSedmica,
+    prvaSedmicaSledecegMjeseca,
     handleNextMonth,
     handleSelectDay,
     handlePrevMonth,

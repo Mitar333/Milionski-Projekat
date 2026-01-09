@@ -1,9 +1,16 @@
 const radnoVrijeme = {
   start: "7:00",
   end: "15:00",
-  pauses: [{ start: "7:00", end: "8:00" }],
+  pauses: [{ start: "7:00", end: "9:00" }],
   isOpen: true,
 }; //treba api endpoint gdje saljem new Date() i on daje radno vrijeme za danas ili za drugi datum radno vrijeme tog dana
+// const radnoVrijeme = {
+//   start: "7:00",
+//   end: "15:00",
+//   pauses: [{ start: "7:00", end: "9:00" }],
+//   appointments:[{start:"9:00",end:"9:20"}] isti format kao i u pauses, da li pamriti 2 polja u db a moram malo korigovati logiku, ne puno korigovati malo al dovoljno
+//   isOpen: true,
+// };
 function useListaMogucih(trajanjeTermina) {
   let [sati, minuta] = radnoVrijeme.start.split(":");
   let [endSati, endMinuta] = radnoVrijeme.end.split(":");

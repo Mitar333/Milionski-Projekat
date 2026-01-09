@@ -1,6 +1,8 @@
 import { useState } from "react";
 // import { useOutletContext } from "react-router-dom";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronLeft, FaChevronUp } from "react-icons/fa";
+import Header from "../../../components/Header";
+import Footer from "../../../components/Footer";
 
 const questions = [
   {
@@ -34,51 +36,54 @@ function Faq() {
   };
 
   return (
-    <div className="animate-fadeIn">
-      <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-800">
-          Često postavljana pitanja
-        </h1>
-        <p className="text-sm text-gray-500">
-          Pronađite brze odgovore na najčešće upite.
-        </p>
-      </div>
-
-      {/* Dinamički Grid: 1 kolona ako je sidebar otvoren, 2 kolone ako je skupljen */}
-      <div className={`grid gap-4 transition-all duration-500 grid-cols-1`}>
-        {questions.map((item) => (
-          <div
-            key={item.id}
-            className={`border rounded-xl transition-all ${
-              activeId === item.id
-                ? "border-blue-200 bg-blue-50/30"
-                : "border-gray-100 bg-white"
-            }`}
-          >
-            <button
-              onClick={() => toggle(item.id)}
-              className="w-full flex items-center justify-between p-4 text-left"
+    <div>
+      <Header
+        to="/settings"
+        label={
+          <span className="flex items-center gap-2">
+            <FaChevronLeft />
+            <p className="px-2  text-2xl"> Često postavljana pitanja</p>
+          </span>
+        }
+      />
+      <div className="animate-fadeIn mt-8 ">
+        {/* Dinamički Grid: 1 kolona ako je sidebar otvoren, 2 kolone ako je skupljen */}
+        <div className={`grid gap-4 transition-all duration-500 grid-cols-1`}>
+          {questions.map((item) => (
+            <div
+              key={item.id}
+              className={`border rounded-xl transition-all ${
+                activeId === item.id
+                  ? "border-blue-200 bg-blue-50/30"
+                  : "border-gray-100 bg-white"
+              }`}
             >
-              <span
-                className={`text-sm font-semibold ${activeId === item.id ? "text-blue-600" : "text-gray-700"}`}
+              <button
+                onClick={() => toggle(item.id)}
+                className="w-full flex items-center justify-between p-4 text-left"
               >
-                {item.q}
-              </span>
-              {activeId === item.id ? (
-                <FaChevronUp className="text-blue-500 text-xs" />
-              ) : (
-                <FaChevronDown className="text-gray-400 text-xs" />
-              )}
-            </button>
+                <span
+                  className={`text-sm font-semibold ${activeId === item.id ? "text-blue-600" : "text-gray-700"}`}
+                >
+                  {item.q}
+                </span>
+                {activeId === item.id ? (
+                  <FaChevronUp className="text-blue-500 text-xs" />
+                ) : (
+                  <FaChevronDown className="text-gray-400 text-xs" />
+                )}
+              </button>
 
-            {activeId === item.id && (
-              <div className="px-4 pb-4 text-sm text-gray-600 leading-relaxed animate-slideDown">
-                {item.a}
-              </div>
-            )}
-          </div>
-        ))}
+              {activeId === item.id && (
+                <div className="px-4 pb-4 text-sm text-gray-600 leading-relaxed animate-slideDown">
+                  {item.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 }

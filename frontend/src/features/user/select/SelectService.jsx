@@ -25,7 +25,7 @@ function SelectService() {
       setService({ newService: services.at(0) });
       navigate("/select/appointment");
     }
-  }, [navigate]);
+  }, [navigate, setService]);
 
   return (
     <div className="max-w-4xl mx-auto">
