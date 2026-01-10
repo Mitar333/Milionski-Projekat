@@ -2,15 +2,14 @@
 ukinuti History.jsx jer nema potrebe za njom ako postoji UserAppointments.jsx koji treba prilagoditi da objedini ono sto je history imao,
 ili ga ostaviti ali promijeniti njegovu namjenu
 
+skratiti EmployeeDetails.jsx
+skratiti ServiceDetails.jsx
+
+ako bas mi bude dosadno i zelim bas clean code skratiti WorkinHours
+
 default radno vrijeme za salon i racunanje istoga objediniti u 1 hook
+skratiti DateTable.jsx
 
-http://localhost:5173/admin/1/archive napraviti ljepsi od do za izabiranje datuma i posebna komponenta za to
- 
-http://localhost:5173/admin/1/working-hours modal napravljen radi bez pronadjenih bugova, smanjiti kolicinu koda u DateTable.jsx odrzati funkcionalnost
-
-
-http://localhost:5173/admin/1/services-details napraviti modal za dodavanje editovanje i brisanje
-http://localhost:5173/admin/1/employees-details napraviti modal za dodavanje editovanje i brisanje
 
 http://localhost:5173/admin/1 dodavanje rezervacije od strane walk inova, sledeci termin je njihov npr, mozda label za koliko sledeci moguci
 
@@ -21,9 +20,9 @@ route("/register", "../components/App.jsx"), za implementirati od 0
 route("/forgot-password", "../components/App.jsx"), za implementirati od 0
 
 za kasnije {
+http://localhost:5173/admin/1/archive napraviti ljepsi od do za izabiranje datuma i posebna komponenta za to
 http://localhost:5173/inbox dodati mogucnost adminu da pise, automatske poruke - nemoguce dok nemamo session
 http://localhost:5173/appointments popraviti prikazi vise, radi ono ali nije najljepse (mozda dodati search opciju zajedno kada budem to radio za arhivu salona)
-http://localhost:5173/settings/history (mozda dodati search opciju zajedno kada budem to radio za arhivu salona)
 }
 
 

@@ -318,7 +318,7 @@ function DateTable({ onSelectDate }) {
     </div>
   );
 }
-function CloseButton() {
+export function CloseButton() {
   const { close } = useModal();
   return (
     <button

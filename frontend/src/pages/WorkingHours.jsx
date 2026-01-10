@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Clock, ChevronDown, ChevronUp, Save, Settings2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Save, Settings2 } from "lucide-react";
 import AdminFooter from "../components/AdminFooter";
 import DateTable from "../components/DateTable";
 import Header from "../components/Header";

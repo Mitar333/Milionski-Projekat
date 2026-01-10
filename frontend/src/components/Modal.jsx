@@ -22,7 +22,7 @@ function Open({ children, opens }) {
 
   // Koristimo span kao wrapper da ne bi klonirali elemente
   return (
-    <span onClick={() => open(opens)} className="inline-block cursor-pointer">
+    <span onClick={() => open(opens)} className="block w-full cursor-pointer">
       {children}
     </span>
   );
