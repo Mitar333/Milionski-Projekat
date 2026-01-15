@@ -1,4 +1,5 @@
 import { getDate, getDay } from "date-fns";
+import toast from "react-hot-toast";
 import { useState } from "react";
 export const pet = ["", "", "", "", ""];
 export const sedam = ["", "", "", "", "", "", ""];
@@ -20,22 +21,21 @@ export const daysOfWeek2 = {
   5: "Subota",
   6: "Nedjelja",
 };
+export const months = {
+  0: [31, "Januar"],
+  1: [28, "Februar"],
+  2: [31, "Mart"],
+  3: [30, "April"],
+  4: [31, "Maj"],
+  5: [30, "Jun"],
+  6: [31, "Jul"],
+  7: [31, "Avgust"],
+  8: [30, "Septembar"],
+  9: [31, "Oktobar"],
+  10: [30, "Novembar"],
+  11: [31, "Decembar"],
+};
 export function useCalendar() {
-  const months = {
-    0: [31, "Januar"],
-    1: [28, "Februar"],
-    2: [31, "Mart"],
-    3: [30, "April"],
-    4: [31, "Maj"],
-    5: [30, "Jun"],
-    6: [31, "Jul"],
-    7: [31, "Avgust"],
-    8: [30, "Septembar"],
-    9: [31, "Oktobar"],
-    10: [30, "Novembar"],
-    11: [31, "Decembar"],
-  };
-
   const [year, setYear] = useState(new Date().getFullYear());
   const [day, setDay] = useState(new Date().getDate());
   const [month, setMonth] = useState(new Date().getMonth());
@@ -124,28 +124,49 @@ export function useCalendar() {
   }
 
   function handleSelectDay(dan, k, sledeci, prosli) {
-    let k2 = k;
-    if (k === 7) {
-      k2 = 0;
-    }
-    setActive(dan);
-    setDay(dan);
-    setDayOfWeek(k2);
-    if (prosli) {
-      if (month === 0) {
-        setMonth(11);
-        setYear((y) => y - 1);
-      } else setMonth((m) => m - 1);
-    } else if (sledeci) {
-      console.log(k2);
-      const dan2 = dan < max ? dan : dan - (max - 1);
-      setActive(dan2);
+    // 1. Priprema podataka
+    let k2 = k === 7 ? 0 : k;
+    let dan2 = dan + 1 >= max ? dan - max + 1 : dan;
+    if (prosli) dan2 = dan;
 
-      if (month === 11) {
-        setMonth(0);
-        setYear((y) => y + 1);
-      } else setMonth((m) => m + 1);
+    let targetMonth = month;
+    let targetYear = year;
+
+    if (prosli) {
+      targetMonth = month === 0 ? 11 : month - 1;
+      targetYear = month === 0 ? year - 1 : year;
+    } else if (sledeci) {
+      targetMonth = month === 11 ? 0 : month + 1;
+      targetYear = month === 11 ? year + 1 : year;
+    } else {
+      if (dan2 < new Date().getDate()) {
+        toast.error("Ne mozete mijenjati radno vrijeme za datume u proslosti");
+        return 5; //bilo sta samo da je vrijednost da bi je detektovao u handleClickk
+      }
     }
+
+    if (targetYear === year && prosli) {
+      //nije bilo promjene u godini
+      if (targetMonth < new Date().getMonth()) {
+        toast.error("Ne mozete mijenjati radno vrijeme za datume u proslosti");
+        return 5; //bilo sta samo da je vrijednost da bi je detektovao u handleClickk
+      }
+    } else {
+      //bilo je promjene u godini
+      if (targetYear < new Date().getFullYear()) {
+        toast.error("Ne mozete mijenjati radno vrijeme za datume u proslosti");
+        return 5; //bilo sta samo da je vrijednost da bi je detektovao u handleClickk
+      }
+    }
+
+    if (prosli || sledeci) {
+      setMonth(targetMonth);
+      setYear(targetYear);
+    }
+
+    setActive(dan2);
+    setDay(dan2);
+    setDayOfWeek(k2);
   }
 
   return {

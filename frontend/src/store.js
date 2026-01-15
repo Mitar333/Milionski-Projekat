@@ -16,3 +16,21 @@ export const useSalon = create((set) => ({
   salon: "",
   update: (newSalon) => set({ salon: newSalon }),
 }));
+export const useActiveDays = create((set) => ({
+  activeDays: {
+    0: true,
+    1: true,
+    2: true,
+    3: true,
+    4: true,
+    5: false,
+    6: false,
+  },
+  toggleDay: (index) => {
+    set((state) => {
+      return {
+        activeDays: { ...state.activeDays, [index]: !state.activeDays[index] },
+      };
+    });
+  },
+}));

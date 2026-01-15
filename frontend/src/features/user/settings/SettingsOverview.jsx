@@ -22,7 +22,7 @@ function SettingsOverview() {
       icon: <FaFilePowerpoint />,
     },
     { path: "/settings/profile", label: "Profil", icon: <FaAddressBook /> },
-    { path: "/settings/history", label: "Istorija", icon: <FaArchive /> },
+
     { path: "/appointments", label: "Termini", icon: <FaCalendarDay /> },
   ];
 

@@ -1,6 +1,6 @@
-const radnoVrijeme = {
+export const radnoVrijeme = {
   start: "7:00",
-  end: "15:00",
+  end: "20:00",
   pauses: [{ start: "7:00", end: "9:00" }],
   isOpen: true,
 }; //treba api endpoint gdje saljem new Date() i on daje radno vrijeme za danas ili za drugi datum radno vrijeme tog dana

@@ -24,7 +24,9 @@ export default function Td({
   let onClickk = () => {};
 
   if (onSelectDate) {
-    onClickk = () => open(opens);
+    onClickk = (a) => {
+      if (!a) open(opens);
+    };
   }
 
   return (
@@ -37,13 +39,13 @@ export default function Td({
         py-1.5 text-sm border-b border-r last:border-r-0 border-gray-100 text-center cursor-pointer transition-all
       `}
       onClick={() => {
-        handleSelectDay(
+        const a = handleSelectDay(
           dan,
           cistiK,
           !isSelected && isNextMonth,
           prva && dan > prviUMjesecu
         );
-        onClickk();
+        onClickk(a);
       }}
     >
       <span className={isNextMonth ? "opacity-50" : ""}>{children}</span>

@@ -1,28 +1,19 @@
 /*
-ukinuti History.jsx jer nema potrebe za njom ako postoji UserAppointments.jsx koji treba prilagoditi da objedini ono sto je history imao,
-ili ga ostaviti ali promijeniti njegovu namjenu
-
-skratiti EmployeeDetails.jsx
-skratiti ServiceDetails.jsx
-
-ako bas mi bude dosadno i zelim bas clean code skratiti WorkinHours
-
-default radno vrijeme za salon i racunanje istoga objediniti u 1 hook
-skratiti DateTable.jsx
-
-
-http://localhost:5173/admin/1 dodavanje rezervacije od strane walk inova, sledeci termin je njihov npr, mozda label za koliko sledeci moguci
+dosta gresaka na sajtu u vezi sa apstrakcijama (vise salona, vise radnika...) sve admin strana
+WorkingHours popraviti activeDays logiku i apstrakciju, drugaciji format kada salon radi a kada ne
 
 
 
-route("/login", "../components/App.jsx"), za implementirati od 0
-route("/register", "../components/App.jsx"), za implementirati od 0
-route("/forgot-password", "../components/App.jsx"), za implementirati od 0
+"../pages/Archive.jsx" Brza pretraga klijenta (Search Bar) 
 
 za kasnije {
 http://localhost:5173/admin/1/archive napraviti ljepsi od do za izabiranje datuma i posebna komponenta za to
-http://localhost:5173/inbox dodati mogucnost adminu da pise, automatske poruke - nemoguce dok nemamo session
 http://localhost:5173/appointments popraviti prikazi vise, radi ono ali nije najljepse (mozda dodati search opciju zajedno kada budem to radio za arhivu salona)
+
+http://localhost:5173/inbox dodati mogucnost adminu da pise, automatske poruke - nemoguce dok nemamo session
+
+EmployeeWorkingHours.jsx dodati da na klik samo zatrazi slobodan dan, ne i da ga sam sebi da
+Admin i Employee Dashboarde srediti po dolosku podataka sa BD (veci posao)
 }
 
 
@@ -33,12 +24,13 @@ sve testirati sa jos mock data
 import { index, layout, prefix, route } from "@react-router/dev/routes";
 
 const routes = [
-  // route("/login", "../components/App.jsx"),
-  // route("/register", "../components/App.jsx"),
-  // route("/forgot-password", "../components/App.jsx"),
-
   ...prefix("/", [
     index("../pages/UserDashboard.jsx"), //user dashboard
+
+    route("/login", "../components/Login.jsx"),
+    route("/register", "../components/Register.jsx"),
+    route("/forgot-password", "../components/ForgotPassword.jsx"),
+
     ...prefix("select", [
       layout("../pages/SelectLayout.jsx", [
         route("/salon", "../features/user/select/SelectSalon.jsx"), //odabir salona (ako je fransiza,ako nije onda se skipuje za usera)
@@ -53,7 +45,7 @@ const routes = [
 
     ...prefix("settings", [
       index("../features/user/settings/SettingsOverview.jsx"),
-      route("/history", "../features/user/settings/History.jsx"), //pregled svih termina koje je user dotad rezervisao
+
       route("/privacy-policy", "../features/user/settings/PrivacyPolicy.jsx"), //zasad generican
       route("/faq", "../features/user/settings/Faq.jsx"), //zasad generican
       route("/profile", "../features/user/settings/Profile.jsx"), //(C)RUD operacije sa profilom
@@ -71,6 +63,11 @@ const routes = [
       route("/working-hours", "../pages/WorkingHours.jsx"),
       route("/archive", "../pages/Archive.jsx"), //Lijepa tabela sa pregledom svakog dana sa radnikom, usluzenim klijentima i ostalim neophodnim parametrima//NISAM zavrsio
     ]),
+  ]),
+  ...prefix("/employee", [
+    index("../pages/EmployeeDasboard.jsx"),
+    route("/employee-working-hours", "../pages/EmployeeWorkingHours.jsx"),
+    route("/employee-archive", "../pages/EmployeeArchive.jsx"),
   ]),
 
   route("*", "../components/NotFound.jsx"),

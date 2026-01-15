@@ -14,6 +14,15 @@ type Pages = {
   "/": {
     params: {};
   };
+  "/login": {
+    params: {};
+  };
+  "/register": {
+    params: {};
+  };
+  "/forgot-password": {
+    params: {};
+  };
   "/select/salon": {
     params: {};
   };
@@ -33,9 +42,6 @@ type Pages = {
     params: {};
   };
   "/settings": {
-    params: {};
-  };
-  "/settings/history": {
     params: {};
   };
   "/settings/privacy-policy": {
@@ -75,6 +81,15 @@ type Pages = {
       "salonId": string;
     };
   };
+  "/employee": {
+    params: {};
+  };
+  "/employee/employee-working-hours": {
+    params: {};
+  };
+  "/employee/employee-archive": {
+    params: {};
+  };
   "/*": {
     params: {
       "*": string;
@@ -85,11 +100,23 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/history" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/:salonId" | "/admin/:salonId/services-details" | "/admin/:salonId/employees-details" | "/admin/:salonId/working-hours" | "/admin/:salonId/archive" | "/*";
+    page: "/" | "/login" | "/register" | "/forgot-password" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/:salonId" | "/admin/:salonId/services-details" | "/admin/:salonId/employees-details" | "/admin/:salonId/working-hours" | "/admin/:salonId/archive" | "/employee" | "/employee/employee-working-hours" | "/employee/employee-archive" | "/*";
   };
   "../pages/UserDashboard.jsx": {
     id: "../pages/UserDashboard";
     page: "/";
+  };
+  "../components/Login.jsx": {
+    id: "../components/Login";
+    page: "/login";
+  };
+  "../components/Register.jsx": {
+    id: "../components/Register";
+    page: "/register";
+  };
+  "../components/ForgotPassword.jsx": {
+    id: "../components/ForgotPassword";
+    page: "/forgot-password";
   };
   "../pages/SelectLayout.jsx": {
     id: "../pages/SelectLayout";
@@ -122,10 +149,6 @@ type RouteFiles = {
   "../features/user/settings/SettingsOverview.jsx": {
     id: "../features/user/settings/SettingsOverview";
     page: "/settings";
-  };
-  "../features/user/settings/History.jsx": {
-    id: "../features/user/settings/History";
-    page: "/settings/history";
   };
   "../features/user/settings/PrivacyPolicy.jsx": {
     id: "../features/user/settings/PrivacyPolicy";
@@ -163,6 +186,18 @@ type RouteFiles = {
     id: "../pages/Archive";
     page: "/admin/:salonId/archive";
   };
+  "../pages/EmployeeDasboard.jsx": {
+    id: "../pages/EmployeeDasboard";
+    page: "/employee";
+  };
+  "../pages/EmployeeWorkingHours.jsx": {
+    id: "../pages/EmployeeWorkingHours";
+    page: "/employee/employee-working-hours";
+  };
+  "../pages/EmployeeArchive.jsx": {
+    id: "../pages/EmployeeArchive";
+    page: "/employee/employee-archive";
+  };
   "../components/NotFound.jsx": {
     id: "../components/NotFound";
     page: "/*";
@@ -172,6 +207,9 @@ type RouteFiles = {
 type RouteModules = {
   "root": typeof import("./src/app/root.tsx");
   "../pages/UserDashboard": unknown;
+  "../components/Login": unknown;
+  "../components/Register": unknown;
+  "../components/ForgotPassword": unknown;
   "../pages/SelectLayout": unknown;
   "../features/user/select/SelectSalon": unknown;
   "../features/user/select/SelectEmployee": unknown;
@@ -180,7 +218,6 @@ type RouteModules = {
   "../pages/UserInbox": unknown;
   "../pages/UserAppointments": unknown;
   "../features/user/settings/SettingsOverview": unknown;
-  "../features/user/settings/History": unknown;
   "../features/user/settings/PrivacyPolicy": unknown;
   "../features/user/settings/Faq": unknown;
   "../features/user/settings/Profile": unknown;
@@ -190,5 +227,8 @@ type RouteModules = {
   "../pages/EmployeeDetails": unknown;
   "../pages/WorkingHours": unknown;
   "../pages/Archive": unknown;
+  "../pages/EmployeeDasboard": unknown;
+  "../pages/EmployeeWorkingHours": unknown;
+  "../pages/EmployeeArchive": unknown;
   "../components/NotFound": unknown;
 };
