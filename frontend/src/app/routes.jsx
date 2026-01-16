@@ -1,10 +1,5 @@
 /*
-dosta gresaka na sajtu u vezi sa apstrakcijama (vise salona, vise radnika...) sve admin strana
-WorkingHours popraviti activeDays logiku i apstrakciju, drugaciji format kada salon radi a kada ne
-
-
-
-"../pages/Archive.jsx" Brza pretraga klijenta (Search Bar) 
+ne valja implementacija pregleda radnog vremena i mijenjanja istog za specificne radnike, nije implementirano br radnika===1
 
 za kasnije {
 http://localhost:5173/admin/1/archive napraviti ljepsi od do za izabiranje datuma i posebna komponenta za to

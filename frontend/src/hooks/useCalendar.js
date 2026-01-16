@@ -126,7 +126,7 @@ export function useCalendar() {
   function handleSelectDay(dan, k, sledeci, prosli) {
     // 1. Priprema podataka
     let k2 = k === 7 ? 0 : k;
-    let dan2 = dan + 1 >= max ? dan - max + 1 : dan;
+    let dan2 = dan + 1 > max ? dan - max + 1 : dan;
     if (prosli) dan2 = dan;
 
     let targetMonth = month;

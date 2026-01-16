@@ -25,7 +25,7 @@ function WorkingHours() {
             Specifični dani / Praznici
           </label>
 
-          <DateTable onSelectDate={true} />
+          <DateTable onSelectDate={"admin"} />
         </div>
 
         {/* Standardno radno vrijeme */}
@@ -76,6 +76,7 @@ export default WorkingHours;
 function WorkingDay({ dan, i }) {
   const toggleDay = useActiveDays((state) => state.toggleDay);
   const activeDays = useActiveDays((state) => state.activeDays);
+
   return (
     <li className="py-5 px-3">
       <div className="flex items-center justify-between mb-4">

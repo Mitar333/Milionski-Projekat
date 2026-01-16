@@ -15,7 +15,7 @@ function EmployeeWorkingHours() {
             Specifični dani / Praznici
           </label>
 
-          <DateTable onSelectDate={true} />
+          <DateTable onSelectDate={"employee"} />
         </div>
       </main>
 

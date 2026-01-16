@@ -1,4 +1,5 @@
-import { Filter, User, Scissors } from "lucide-react";
+//filtriranje na BE
+import { Filter, User, Scissors, Search, ChevronDown } from "lucide-react";
 import AdminFooter from "../components/AdminFooter";
 import Header from "../components/Header";
 import { useLocation } from "react-router-dom";
@@ -61,31 +62,75 @@ function Archive() {
         </div>
 
         {/* FILTERI - Kompaktni */}
-        <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-6 space-y-3">
-          <div className="flex items-center gap-2 mb-1">
-            <Filter className="w-3.5 h-3.5 text-gray-400" />
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-tight">
-              Filteri
-            </span>
+        <div className="bg-white p-5 rounded-4xl border border-gray-100 shadow-sm mb-6 space-y-4">
+          {/* Header filtera */}
+          <div className="flex items-center justify-between mb-1 px-1">
+            <div className="flex items-center gap-2">
+              <Filter className="w-3.5 h-3.5 text-indigo-500" />
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                Napredna pretraga
+              </span>
+            </div>
+            <button className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 transition-colors uppercase">
+              Poništi
+            </button>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              className="text-xs bg-gray-50 border-none rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500"
-              placeholder="Od: dd.mm.yy"
-              type="text"
-            />
-            <input
-              className="text-xs bg-gray-50 border-none rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500"
-              placeholder="Do: dd.mm.yy"
-              type="text"
-            />
+
+          {/* Search polje - sada na vrhu jer je najbitnije */}
+          <div className="relative group">
+            <label className="block text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1.5 ml-1">
+              Ime klijenta
+            </label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+              <input
+                placeholder="Npr. Marko Marković"
+                className="w-full pl-9 pr-4 py-3 bg-gray-50 border-none rounded-2xl text-xs font-medium placeholder:text-gray-300 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all outline-none"
+              />
+            </div>
           </div>
-          <select className="w-full text-xs bg-gray-50 border-none rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500 appearance-none">
-            <option>Svi statusi</option>
-            <option>Odrađeno</option>
-            <option>No show</option>
-            <option>Otkazani</option>
-          </select>
+
+          {/* Grid za datume */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <label className="block text-[9px] font-black text-gray-400 uppercase tracking-tighter ml-1">
+                Od datuma
+              </label>
+              <input
+                className="w-full text-xs bg-gray-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all outline-none text-gray-600 font-medium"
+                placeholder="dd.mm.yy"
+                type="text"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-[9px] font-black text-gray-400 uppercase tracking-tighter ml-1">
+                Do datuma
+              </label>
+              <input
+                className="w-full text-xs bg-gray-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all outline-none text-gray-600 font-medium"
+                placeholder="dd.mm.yy"
+                type="text"
+              />
+            </div>
+          </div>
+
+          {/* Status Select */}
+          <div className="space-y-1.5">
+            <label className="block text-[9px] font-black text-gray-400 uppercase tracking-tighter ml-1">
+              Status termina
+            </label>
+            <div className="relative">
+              <select className="w-full text-xs bg-gray-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all outline-none appearance-none font-medium text-gray-600 cursor-pointer">
+                <option>Svi statusi</option>
+                <option>Odrađeno</option>
+                <option>No show</option>
+                <option>Otkazani</option>
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                <ChevronDown className="w-4 h-4" />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* LISTA TERMINA */}
