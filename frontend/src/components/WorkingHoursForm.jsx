@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { daysOfWeek, months } from "../hooks/useCalendar";
-import { useActiveDays } from "../store";
+// import { useActiveDays } from "../store";
 import { CloseButton } from "./DateTable";
 import Input from "./Input";
+function getData(/*employeeId*/) {
+  return {
+    isOpen: true,
+    start: "07:00",
+    end: "15:00",
+    reason: "",
+  };
+}
 
 export function WorkingHoursForm({
   dayOfWeek,
@@ -12,6 +20,10 @@ export function WorkingHoursForm({
   year,
   onSelectDate,
 }) {
+  // const activeDays = useActiveDays((state) => state.activeDays);
+  const izabraniDatum = `${day < 10 ? `0${day}` : day}-${month + 1 < 10 ? `0${month + 1}` : month + 1}-${year}`;
+
+  const [employeeId, setEmployeeId] = useState("all");
   const employees = [
     {
       id: 100,
@@ -23,68 +35,14 @@ export function WorkingHoursForm({
     },
     {
       id: 101,
-      name: "Ana Anić",
-      title: "Frizerka",
-      email: "ana@salon.com",
-      phone: "066 987 654",
-      services: [1, 2],
+      name: "Zivko Zivković",
+      title: "Glavni berber",
+      email: "zivko@salon.com",
+      phone: "065 123 456",
+      services: [1],
     },
   ];
-
-  const [employeeId, setEmployeeId] = useState("all");
-  const activeDays = useActiveDays((state) => state.activeDays);
-  let specificDates = [];
-  if (onSelectDate === "admin") {
-    specificDates = [
-      {
-        date: "07-01-2026",
-        start: "",
-        end: "",
-        isOpen: false,
-        reason: "Bozic",
-        employees: [100],
-      },
-      {
-        date: "27-01-2026",
-        start: "10:00",
-        end: "14:00",
-        isOpen: true,
-        reason: "Sveti Sava",
-        employees: [101],
-      },
-    ];
-  } else if (onSelectDate === "employee") {
-    specificDates = [
-      {
-        date: "07-01-2026",
-        start: "",
-        end: "",
-        isOpen: false,
-        reason: "Bozic",
-      },
-      {
-        date: "27-01-2026",
-        start: "10:00",
-        end: "14:00",
-        isOpen: true,
-        reason: "Sveti Sava",
-      },
-    ];
-  }
-  const izabraniDatum = `${day < 10 ? `0${day}` : day}-${month + 1 < 10 ? `0${month + 1}` : month + 1}-${year}`;
-  let isSpecial = specificDates.find((date) => date.date === izabraniDatum);
-  if (onSelectDate === "admin" && employeeId !== "all") {
-    if (isSpecial && !isSpecial.employees?.includes(employeeId)) {
-      isSpecial = { isOpen: true, start: "08:00", end: "20:00", reason: "" };
-    }
-  }
-  const isOpen =
-    activeDays[dayOfWeek - 1 === -1 ? 6 : dayOfWeek - 1] &&
-    !specificDates.filter((date) => date.date === izabraniDatum && date.isOpen)
-      .length
-      ? true
-      : isSpecial?.isOpen;
-
+  const { isOpen, start, end, reason } = getData(employeeId);
   if (day === 99) return null;
   return (
     <div className="flex flex-col gap-6 text-gray-700">
@@ -101,7 +59,7 @@ export function WorkingHoursForm({
         </p>
       </div>
 
-      {onSelectDate === "admin" && (
+      {onSelectDate === "admin" && employees.length > 1 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2 px-1">
             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
@@ -174,24 +132,21 @@ export function WorkingHoursForm({
         className={`space-y-5 transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-40 pointer-events-none"}`}
       >
         {/* Vrijeme Od - Do */}
-        <div className="grid grid-cols-2 gap-4">
+        <div
+          className="grid grid-cols-2 gap-4"
+          key={`${izabraniDatum}-${employeeId}`}
+        >
           <div className="relative">
             <span className="absolute -top-2 left-3 px-1 bg-white text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
               Otvaranje
             </span>
-            <Input
-              defaultValue={isSpecial?.isOpen ? isSpecial.start : "07:00"}
-              type="time"
-            />
+            <Input defaultValue={isOpen ? start : "07:00"} type="time" />
           </div>
           <div className="relative">
             <span className="absolute -top-2 left-3 px-1 bg-white text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
               Zatvaranje
             </span>
-            <Input
-              defaultValue={isSpecial?.isOpen ? isSpecial.end : "15:00"}
-              type="time"
-            />
+            <Input defaultValue={isOpen ? end : "15:00"} type="time" />
           </div>
         </div>
 
@@ -203,7 +158,7 @@ export function WorkingHoursForm({
           <Input
             type="text"
             placeholder="npr. Nova Godina, Slava, Privatne obaveze..."
-            defaultValue={isSpecial?.isOpen ? isSpecial.reason : ""}
+            defaultValue={isOpen ? reason : ""}
           />
         </div>
       </div>
@@ -220,3 +175,86 @@ export function WorkingHoursForm({
     </div>
   );
 }
+
+/**
+  const [employeeId, setEmployeeId] = useState("all");
+  const activeDays = useActiveDays((state) => state.activeDays);
+
+  //mock data
+  const employees = [
+    {
+      id: 100,
+      name: "Marko Marković",
+      title: "Glavni berber",
+      email: "marko@salon.com",
+      phone: "065 123 456",
+      services: [1],
+    },
+  ];
+  let specificDates = [];
+  if (onSelectDate === "admin") {
+    specificDates = [
+      {
+        date: "07-01-2026",
+        start: "",
+        end: "",
+        isOpen: false,
+        reason: "Bozic",
+        employees: [100],
+      },
+      {
+        date: "27-01-2026",
+        start: "10:00",
+        end: "14:00",
+        isOpen: true,
+        reason: "Sveti Sava",
+        employees: [100],
+      },
+    ];
+  } else if (onSelectDate === "employee") {
+    specificDates = [
+      {
+        date: "07-01-2026",
+        start: "",
+        end: "",
+        isOpen: false,
+        reason: "Bozic",
+      },
+      {
+        date: "27-01-2026",
+        start: "10:00",
+        end: "14:00",
+        isOpen: true,
+        reason: "Sveti Sava",
+      },
+    ];
+  }
+
+  const izabraniDatum = `${day < 10 ? `0${day}` : day}-${month + 1 < 10 ? `0${month + 1}` : month + 1}-${year}`;
+
+  let isSpecial = specificDates.find((date) => date.date === izabraniDatum);
+  let isOpen = activeDays[dayOfWeek - 1 === -1 ? 6 : dayOfWeek - 1];
+  if (isSpecial) {
+    isOpen =
+      isOpen &&
+      specificDates.find((date) =>
+        date.date === izabraniDatum && date.isOpen ? isSpecial?.isOpen : true
+      );
+  }
+  console.log(isSpecial);
+  if (onSelectDate === "admin" && employeeId !== "all" && isSpecial) {
+    if (!isSpecial.employees?.includes(employeeId)) {
+      isSpecial = { isOpen: true, start: "08:00", end: "20:00", reason: "" };
+      isOpen = true;
+    } else {
+      isOpen = isSpecial.isOpen;
+    }
+  }
+  if (onSelectDate === "admin" && employeeId === "all" && isSpecial) {
+    if (isSpecial.employees.length === employees.length) {
+      isOpen = isSpecial.isOpen;
+    } else {
+      isSpecial = { isOpen: true, start: "08:00", end: "20:00", reason: "" };
+      isOpen = true;
+    }
+  } */

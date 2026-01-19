@@ -1,19 +1,6 @@
 /*
-ne valja implementacija pregleda radnog vremena i mijenjanja istog za specificne radnike, nije implementirano br radnika===1
-
-za kasnije {
-http://localhost:5173/admin/1/archive napraviti ljepsi od do za izabiranje datuma i posebna komponenta za to
-http://localhost:5173/appointments popraviti prikazi vise, radi ono ali nije najljepse (mozda dodati search opciju zajedno kada budem to radio za arhivu salona)
-
 http://localhost:5173/inbox dodati mogucnost adminu da pise, automatske poruke - nemoguce dok nemamo session
 
-EmployeeWorkingHours.jsx dodati da na klik samo zatrazi slobodan dan, ne i da ga sam sebi da
-Admin i Employee Dashboarde srediti po dolosku podataka sa BD (veci posao)
-}
-
-
-
-sve testirati sa jos mock data
 */
 
 import { index, layout, prefix, route } from "@react-router/dev/routes";

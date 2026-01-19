@@ -165,7 +165,7 @@ function UserAppointments() {
             ) : (
               loadAmmount > 3 && (
                 <button
-                  onClick={() => setLoadAmmount(3)}
+                  onClick={() => setLoadAmmount(2)}
                   className="w-full py-2 text-xs font-medium text-gray-400 hover:text-gray-600 transition-colors"
                 >
                   Prikaži manje ↑

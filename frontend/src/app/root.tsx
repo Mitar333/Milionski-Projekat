@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
 import "./app.css"; // Tailwind stilovi
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Toaster } from "react-hot-toast";
 export default function Root() {
   return (
@@ -8,7 +10,9 @@ export default function Root() {
         <div>
           <Toaster />
         </div>
-        <Outlet />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Outlet />
+        </LocalizationProvider>
       </main>
     </div>
   );

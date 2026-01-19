@@ -3,8 +3,16 @@ import { Filter, User, Scissors, Search, ChevronDown } from "lucide-react";
 import AdminFooter from "../components/AdminFooter";
 import Header from "../components/Header";
 import { useLocation } from "react-router-dom";
-
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import { subDays } from "date-fns";
 function Archive() {
+  const today = subDays(new Date(), 7);
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+  const datum = `${year}-${month}-${day}`;
+
   const location = useLocation();
   const termini = [
     {
@@ -90,28 +98,42 @@ function Archive() {
             </div>
           </div>
 
-          {/* Grid za datume */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <label className="block text-[9px] font-black text-gray-400 uppercase tracking-tighter ml-1">
-                Od datuma
-              </label>
-              <input
-                className="w-full text-xs bg-gray-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all outline-none text-gray-600 font-medium"
-                placeholder="dd.mm.yy"
-                type="text"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-[9px] font-black text-gray-400 uppercase tracking-tighter ml-1">
-                Do datuma
-              </label>
-              <input
-                className="w-full text-xs bg-gray-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all outline-none text-gray-600 font-medium"
-                placeholder="dd.mm.yy"
-                type="text"
-              />
-            </div>
+          <div className="grid grid-cols-2 gap-4">
+            {" "}
+            <DatePicker
+              label="Od"
+              defaultValue={dayjs(datum)}
+              format="DD/MM/YYYY"
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  variant: "outlined",
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "0.75rem",
+                      backgroundColor: "#f9fafb",
+                    },
+                  },
+                },
+              }}
+            />
+            <DatePicker
+              label="Do"
+              defaultValue={dayjs()}
+              format="DD/MM/YYYY"
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  variant: "outlined",
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "0.75rem",
+                      backgroundColor: "#f9fafb",
+                    },
+                  },
+                },
+              }}
+            />
           </div>
 
           {/* Status Select */}
