@@ -4,8 +4,9 @@ import AdminFooter from "../components/AdminFooter";
 import DateTable from "../components/DateTable";
 import Header from "../components/Header";
 import { useLocation } from "react-router-dom";
-import { CalendarProvider, daysOfWeek2 } from "../context/CalendarContext";
+import { CalendarProvider } from "../context/CalendarContext";
 import { useActiveDays } from "../store";
+import { daysOfWeek2 } from "../utils/constants";
 
 function WorkingHours() {
   const location = useLocation();

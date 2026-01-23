@@ -4,7 +4,7 @@ const stil =
   "bg-indigo-600 text-white font-bold shadow-sm scale-105 rounded-sm ";
 
 export default function Td({
-  onSelectDate,
+  isSelectDate,
   open,
   opens,
   children,
@@ -23,7 +23,7 @@ export default function Td({
   if (active && dan) isSelected = active === dan;
   let onClickk = () => {};
 
-  if (onSelectDate) {
+  if (isSelectDate) {
     onClickk = (a) => {
       if (!a) open(opens);
     };

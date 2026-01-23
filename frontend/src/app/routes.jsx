@@ -1,7 +1,7 @@
 /*
-Components
-  Working Hours Form skratiti i izdvojiti komponente na ispod 100 linija
-  useCalendar dodati testove za funkcije
+  CalendarContext dodati testove za funkcije
+  calendarHelpers dodati testove za funkcije
+
 Pages 
   Admin dashboard skratiti i izdvojiti komponente na ispod 100 linija i testirati funkcije/izvesti ih u posebne fajlove ili helpers.js 
   Archive skratiti i izdvojiti komponente na ispod 100 linija 
