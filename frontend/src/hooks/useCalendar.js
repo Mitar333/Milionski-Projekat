@@ -58,7 +58,7 @@ export function useCalendar() {
   const prvaSedmica = prvaSedmicaa(year, month);
   const prvaSedmicaSledecegMjeseca = prvaSedmicaa(
     month === 11 ? year + 1 : year,
-    month === 11 ? 0 : month + 1
+    month === 11 ? 0 : month + 1,
   );
   const nedelja = prvaSedmica.at(6);
   const nastavak =
@@ -94,11 +94,11 @@ export function useCalendar() {
       new Date(
         m === 0 ? y - 1 : y,
         m === 0 ? 11 : m - 1,
-        months[m === 0 ? 11 : m - 1].at(0)
-      )
+        months[m === 0 ? 11 : m - 1].at(0),
+      ),
     );
     return [...Array(zadnjiUMjesecu + 1).keys()].slice(
-      zadnjiUMjesecu - pozicijaZadnjegUMjesecu + 1
+      zadnjiUMjesecu - pozicijaZadnjegUMjesecu + 1,
     );
   }
   zadnjaSedmicaa(year, month);
@@ -178,7 +178,6 @@ export function useCalendar() {
     daysOfWeek2,
     nastavak,
     month,
-
     year,
     active,
     prviUMjesecu,

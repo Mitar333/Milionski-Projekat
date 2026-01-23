@@ -1,7 +1,0 @@
-// NAPRAVIO NA POCETKU PROJEKTA ISTRAZITI DA LI SAM IGDJE KORISTIO KORISTITI PRAVILO NE DIRANJA KAPIJE ZA KOJU NE ZNAS STA RADI DOK NE SAZNAS STA TACNO RADI
-
-// function SalonDetails() {
-//   return <div>SalonDetails</div>;
-// }
-
-// export default SalonDetails;

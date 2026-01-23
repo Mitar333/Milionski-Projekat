@@ -29,10 +29,6 @@ function SelectService() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        Izaberite uslugu
-      </h2> */}
-
       {/* Grid koji na mobitelu ima 1 kolonu, a na tabletu/PC-u 2 */}
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {services.map((service, index) => (

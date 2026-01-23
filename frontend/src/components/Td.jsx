@@ -29,21 +29,16 @@ export default function Td({
     };
   }
 
+  /* (prva && dan > prviUMjesecu + 10)  desetka je bezveze desavala se greska da je prvi 1 a nedjelja 7 pa ako je prvi 11 nema toga a svejedno najmanji od proslog mjeseca je 23 */
   return (
     <td
-      className={`
-        ${isSelected && !(prva && dan > prviUMjesecu) ? stil : ""} desetka je bezveze desavala se greska da je prvi 1 a nedjelja 7 pa ako je prvi 11 nema toga 
-                                                                  a svejedno najmanji od proslog mjeseca je 23
-        ${(!isSelected && isNextMonth) || (prva && dan > prviUMjesecu + 10) ? "text-gray-300 bg-gray-50/30" : "text-gray-700 hover:bg-indigo-50"} 
-        
-        py-1.5 text-sm border-b border-r last:border-r-0 border-gray-100 text-center cursor-pointer transition-all
-      `}
+      className={`${isSelected && !(prva && dan > prviUMjesecu) ? stil : ""}${(!isSelected && isNextMonth) || (prva && dan > prviUMjesecu + 10) ? "text-gray-300 bg-gray-50/30" : "text-gray-700 hover:bg-indigo-50"} py-1.5 text-sm border-b border-r last:border-r-0 border-gray-100 text-center cursor-pointer transition-all`}
       onClick={() => {
         const a = handleSelectDay(
           dan,
           cistiK,
           !isSelected && isNextMonth,
-          prva && dan > prviUMjesecu
+          prva && dan > prviUMjesecu,
         );
         onClickk(a);
       }}

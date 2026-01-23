@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 
 import {
   FaAddressBook,
-  FaArchive,
   FaComments,
   FaChevronLeft,
   FaFilePowerpoint,
@@ -69,10 +68,7 @@ function SettingsOverview() {
             </ul>
           </nav>
         </div>
-
-        {/* SADRŽAJ */}
       </div>
-
       <Footer />
     </div>
   );

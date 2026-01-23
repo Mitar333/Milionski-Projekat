@@ -4,7 +4,6 @@ import Input from "./Input";
 
 export default function ForgotPassword() {
   return (
-    // Promjena: justify-start umjesto justify-center, pt-20 za razmak od vrha
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-start pt-20 px-6 pb-12">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Link
@@ -21,7 +20,6 @@ export default function ForgotPassword() {
         </p>
       </div>
 
-      {/* Smanjen mt-10 na mt-8 da bude kompaktnije */}
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-8 shadow-xl shadow-indigo-100/30 rounded-[40px] border border-gray-100 space-y-6">
           <div>

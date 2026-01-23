@@ -26,9 +26,9 @@ function AppointmentTable() {
   return (
     <div className="max-w-md mx-auto p-4 bg-white shadow-sm">
       <DateTable />
-      {/* Horizontalna lista termina*/}
+
       <AppointmentList />
-      {/* Detalji termina - Spakovano u Grid */}
+
       <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
         <div className="grid grid-cols-2 gap-y-3 text-sm">
           <div>

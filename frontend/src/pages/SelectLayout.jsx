@@ -10,7 +10,6 @@ function SelectLayout() {
     <div className="flex flex-col min-h-screen w-screen bg-gray-50">
       <Header label={location.pathname.split("/").at(2)} />
 
-      {/* main raste (flex-grow) da popuni prostor */}
       <main className="grow container pt-8">
         <Outlet />
       </main>

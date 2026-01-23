@@ -1,5 +1,4 @@
 import {
-  FaUser,
   FaEnvelope,
   FaPhone,
   FaSignOutAlt,

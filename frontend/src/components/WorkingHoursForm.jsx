@@ -3,7 +3,7 @@ import { daysOfWeek, months } from "../hooks/useCalendar";
 // import { useActiveDays } from "../store";
 import { CloseButton } from "./DateTable";
 import Input from "./Input";
-function getData(/*employeeId*/) {
+function getData(/*employeeId izabraniDatum*/) {
   return {
     isOpen: true,
     start: "07:00",
@@ -42,7 +42,8 @@ export function WorkingHoursForm({
       services: [1],
     },
   ];
-  const { isOpen, start, end, reason } = getData(employeeId);
+  const { isOpen, start, end, reason } = getData(employeeId, izabraniDatum);
+  const [isOpen2, setIsOpen2] = useState(isOpen);
   if (day === 99) return null;
   return (
     <div className="flex flex-col gap-6 text-gray-700">
@@ -111,25 +112,27 @@ export function WorkingHoursForm({
         <div>
           <p className="font-bold text-sm text-gray-800">Status salona</p>
           <p className="text-xs text-gray-500">
-            {isOpen ? "Salon radi po planu" : "Salon je zatvoren cijeli dan"}
+            {isOpen2 ? "Salon radi po planu" : "Salon je zatvoren cijeli dan"}
           </p>
         </div>
         <div
-          onClick={() => {}}
+          onClick={() => {
+            setIsOpen2((s) => !s);
+          }}
           className={`w-14 h-7 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 ${
-            isOpen ? "bg-emerald-500 shadow-inner" : "bg-gray-300"
+            isOpen2 ? "bg-emerald-500 shadow-inner" : "bg-gray-300"
           }`}
         >
           <div
             className={`bg-white w-5 h-5 rounded-full shadow-lg transform transition-transform duration-300 ${
-              isOpen ? "translate-x-7" : "translate-x-0"
+              isOpen2 ? "translate-x-7" : "translate-x-0"
             }`}
           />
         </div>
       </div>
       {/* INPUTI SEKCIJA */}
       <div
-        className={`space-y-5 transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-40 pointer-events-none"}`}
+        className={`space-y-5 transition-all duration-300 ${isOpen2 ? "opacity-100" : "opacity-40 pointer-events-none"}`}
       >
         {/* Vrijeme Od - Do */}
         <div

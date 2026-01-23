@@ -2,12 +2,13 @@ import { CloseButton } from "./DateTable";
 
 function DeleteModal({ serviceToDelete, services, type }) {
   const config = {
-    employee: { title: "radnika", name: "radnika" },
-    service: { title: "usluge", name: "uslugu" },
+    employee: { title: "radnika ", name: "radnika " },
+    service: { title: "usluge ", name: "uslugu " },
+    appointment: { title: "termina", name: "termin" },
   };
 
   const text = config[type] || { title: "stavke", name: "stavku" };
-  const itemName = services.find((e) => e.id === serviceToDelete)?.name;
+  const itemName = services?.find((e) => e.id === serviceToDelete)?.name || "";
 
   return (
     <div className="flex flex-col items-center text-center p-2 max-w-sm">
@@ -20,7 +21,7 @@ function DeleteModal({ serviceToDelete, services, type }) {
       </h1>
 
       <p className="text-gray-500 font-medium leading-relaxed">
-        Da li ste sigurni da želite obrisati {text.name}{" "}
+        Da li ste sigurni da želite obrisati {text.name}
         <span className="text-gray-900 font-bold uppercase">{itemName}</span>?
         Ova radnja se ne može poništiti.
       </p>

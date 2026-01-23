@@ -28,11 +28,7 @@ function SelectSalon() {
   }, [navigate, setSalon]);
 
   return (
-    <div className=" ">
-      {/* <h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
-        Izaberite salon
-      </h1> */}
-
+    <div>
       <div className="space-y-4">
         {salons.map((salon, index) => (
           <div

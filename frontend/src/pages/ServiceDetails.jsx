@@ -97,7 +97,7 @@ function ServiceDetails() {
         <DeleteModal
           services={services}
           serviceToDelete={serviceToDelete}
-          label="usluga"
+          type="service"
         />
       </Modal.Window>
     </Modal>
