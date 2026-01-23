@@ -17,7 +17,7 @@ const WeeklyDefaultSchema = new mongoose.Schema({
 //isWorkingDay je nepotrebno jer ce ovo se koristiti u slucajevima kada je radni dan a npr slava je radniku ili je uzeo slobodan dan
 //konvencija za nazivanje fajlova u Express-u je da pocinju sa malim slovom a u React-u da fajlovi komponenti krecu sa velikim slovima i svakako fajl se ne naziva
 //WorkingHours vec bi bilo workingHoursModel.js
-
+//u controlleru nisi pisao nimalo if-ove ako je nesto poslo po zlu
 const DailyOverrideSchema = new mongoose.Schema({
   date: { type: Date, required: true, unique: true },
   day: { type: Number },
