@@ -48,7 +48,7 @@ export default function Register() {
             <p className="ml-2 text-xs text-gray-500 leading-relaxed">
               Prihvatam{" "}
               <Link
-                to="/settings/privacy-policy"
+                to="/settings/privacy-policy/bez"
                 className="text-indigo-600 font-bold underline"
               >
                 Politiku Privatnosti

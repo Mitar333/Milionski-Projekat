@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { daysOfWeek, months } from "../hooks/useCalendar";
 // import { useActiveDays } from "../store";
 import { CloseButton } from "./DateTable";
 import Input from "./Input";
+import { daysOfWeek, months } from "../utils/constants";
+import { useCalendar } from "../hooks/useCalendar";
 function getData(/*employeeId izabraniDatum*/) {
   return {
     isOpen: true,
@@ -12,14 +13,8 @@ function getData(/*employeeId izabraniDatum*/) {
   };
 }
 
-export function WorkingHoursForm({
-  dayOfWeek,
-  nastavak,
-  day,
-  month,
-  year,
-  onSelectDate,
-}) {
+export function WorkingHoursForm({ isSelectDate }) {
+  const { day, month, year, dayOfWeek, nastavak } = useCalendar();
   // const activeDays = useActiveDays((state) => state.activeDays);
   const izabraniDatum = `${day < 10 ? `0${day}` : day}-${month + 1 < 10 ? `0${month + 1}` : month + 1}-${year}`;
 
@@ -60,7 +55,7 @@ export function WorkingHoursForm({
         </p>
       </div>
 
-      {onSelectDate === "admin" && employees.length > 1 && (
+      {isSelectDate === "admin" && employees.length > 1 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2 px-1">
             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
@@ -195,7 +190,7 @@ export function WorkingHoursForm({
     },
   ];
   let specificDates = [];
-  if (onSelectDate === "admin") {
+  if (isSelectDate === "admin") {
     specificDates = [
       {
         date: "07-01-2026",
@@ -214,7 +209,7 @@ export function WorkingHoursForm({
         employees: [100],
       },
     ];
-  } else if (onSelectDate === "employee") {
+  } else if (isSelectDate === "employee") {
     specificDates = [
       {
         date: "07-01-2026",

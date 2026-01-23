@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import useOutsideClick from "../hooks/useModal"; // Osiguraj da ovaj hook radi sa ref-om
-import { ModalContext } from "../hooks/ModalContext";
+import { ModalContext } from "../context/ModalContext";
 
 function Modal({ children }) {
   const [openName, setOpenName] = useState("");
@@ -50,7 +50,7 @@ function Window({ name, children }) {
         <div className="mt-4">{children}</div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
 

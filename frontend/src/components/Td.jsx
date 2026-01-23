@@ -1,3 +1,5 @@
+import { useCalendar } from "../hooks/useCalendar";
+
 const stil =
   "bg-indigo-600 text-white font-bold shadow-sm scale-105 rounded-sm ";
 
@@ -9,11 +11,9 @@ export default function Td({
   dan,
   k,
   prva = false,
-  prviUMjesecu = 0,
-  active,
-  max,
-  handleSelectDay,
 }) {
+  const { active, handleSelectDay, max, prviUMjesecu } = useCalendar();
+
   const cistiK = typeof k === "string" ? k.slice(0, -1) : k;
 
   // Provjera da li je dan iz sljedećeg mjeseca

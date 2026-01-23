@@ -4,7 +4,7 @@ import AdminFooter from "../components/AdminFooter";
 import DateTable from "../components/DateTable";
 import Header from "../components/Header";
 import { useLocation } from "react-router-dom";
-import { daysOfWeek2 } from "../hooks/useCalendar";
+import { CalendarProvider, daysOfWeek2 } from "../context/CalendarContext";
 import { useActiveDays } from "../store";
 
 function WorkingHours() {
@@ -24,8 +24,9 @@ function WorkingHours() {
           <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3 block px-1">
             Specifični dani / Praznici
           </label>
-
-          <DateTable onSelectDate={"admin"} />
+          <CalendarProvider>
+            <DateTable isSelectDate={"admin"} />
+          </CalendarProvider>
         </div>
 
         {/* Standardno radno vrijeme */}

@@ -1,8 +1,5 @@
 /*
 Components
-  Not Found sve vraca na user stranu, podesiti da stranica zna odakle si dosao
-  Register politika privatnosti ima user Header i Footer
-  Date Table skratiti i izdvojiti komponente na ispod 100 linija i testirati funkcije
   Working Hours Form skratiti i izdvojiti komponente na ispod 100 linija
   useCalendar dodati testove za funkcije
 Pages 
@@ -42,6 +39,10 @@ const routes = [
       index("../features/user/settings/SettingsOverview.jsx"),
 
       route("/privacy-policy", "../features/user/settings/PrivacyPolicy.jsx"), //zasad generican
+      route(
+        "/privacy-policy/bez",
+        "../features/user/settings/PrivacyPolicyBez.jsx",
+      ),
       route("/faq", "../features/user/settings/Faq.jsx"), //zasad generican
       route("/profile", "../features/user/settings/Profile.jsx"), //(C)RUD operacije sa profilom
     ]),

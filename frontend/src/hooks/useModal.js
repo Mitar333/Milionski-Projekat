@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ModalContext } from "./ModalContext";
+import { ModalContext } from "../context/ModalContext";
 import { useEffect, useRef } from "react";
 
 export function useModal() {
@@ -26,7 +26,7 @@ export function useOutsideClick(handler, listenCapturing = true) {
       return () =>
         document.removeEventListener("click", handleClick, listenCapturing);
     },
-    [handler, listenCapturing]
+    [handler, listenCapturing],
   );
 
   return ref;

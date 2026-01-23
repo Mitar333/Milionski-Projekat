@@ -47,6 +47,9 @@ type Pages = {
   "/settings/privacy-policy": {
     params: {};
   };
+  "/settings/privacy-policy/bez": {
+    params: {};
+  };
   "/settings/faq": {
     params: {};
   };
@@ -100,7 +103,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/register" | "/forgot-password" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/privacy-policy" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/:salonId" | "/admin/:salonId/services-details" | "/admin/:salonId/employees-details" | "/admin/:salonId/working-hours" | "/admin/:salonId/archive" | "/employee" | "/employee/employee-working-hours" | "/employee/employee-archive" | "/*";
+    page: "/" | "/login" | "/register" | "/forgot-password" | "/select/salon" | "/select/employee" | "/select/service" | "/select/appointment" | "/inbox" | "/appointments" | "/settings" | "/settings/privacy-policy" | "/settings/privacy-policy/bez" | "/settings/faq" | "/settings/profile" | "/admin" | "/admin/:salonId" | "/admin/:salonId/services-details" | "/admin/:salonId/employees-details" | "/admin/:salonId/working-hours" | "/admin/:salonId/archive" | "/employee" | "/employee/employee-working-hours" | "/employee/employee-archive" | "/*";
   };
   "../pages/UserDashboard.jsx": {
     id: "../pages/UserDashboard";
@@ -153,6 +156,10 @@ type RouteFiles = {
   "../features/user/settings/PrivacyPolicy.jsx": {
     id: "../features/user/settings/PrivacyPolicy";
     page: "/settings/privacy-policy";
+  };
+  "../features/user/settings/PrivacyPolicyBez.jsx": {
+    id: "../features/user/settings/PrivacyPolicyBez";
+    page: "/settings/privacy-policy/bez";
   };
   "../features/user/settings/Faq.jsx": {
     id: "../features/user/settings/Faq";
@@ -219,6 +226,7 @@ type RouteModules = {
   "../pages/UserAppointments": unknown;
   "../features/user/settings/SettingsOverview": unknown;
   "../features/user/settings/PrivacyPolicy": unknown;
+  "../features/user/settings/PrivacyPolicyBez": unknown;
   "../features/user/settings/Faq": unknown;
   "../features/user/settings/Profile": unknown;
   "../pages/AdminSelectSalon": unknown;

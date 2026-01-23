@@ -7,6 +7,7 @@ import {
 
 import DateTable from "../../../components/DateTable";
 import AppointmentList from "../../../components/AppointmentList";
+import { CalendarProvider } from "../../../context/CalendarContext";
 
 function AppointmentTable() {
   const employee = useEmployee((state) => state.employee).newEmployee || {
@@ -25,7 +26,9 @@ function AppointmentTable() {
 
   return (
     <div className="max-w-md mx-auto p-4 bg-white shadow-sm">
-      <DateTable />
+      <CalendarProvider>
+        <DateTable />
+      </CalendarProvider>
 
       <AppointmentList />
 
