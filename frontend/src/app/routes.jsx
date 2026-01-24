@@ -1,16 +1,6 @@
 /*
   CalendarContext dodati testove za funkcije
   calendarHelpers dodati testove za funkcije
-
-Pages 
-  Admin dashboard skratiti i izdvojiti komponente na ispod 100 linija i testirati funkcije/izvesti ih u posebne fajlove ili helpers.js 
-  Archive skratiti i izdvojiti komponente na ispod 100 linija 
-  Employee Archive vidjeti zasto je visestruko kraci od archive
-  Employee dashboard skratiti i izdvojiti komponente na ispod 100 linija ne koristiti kod vec napisan u drugom fajlu
-  Employee Details skratiti i izdvojiti komponente na ispod 100 linija 
-  Service Details skratiti i izdvojiti komponente na ispod 100 linija 
-  User Dashboard Appointment Row izdvojiti u zaseban fajl
-  Working Hours odvojiti drugu komponentu
 */
 
 import { index, layout, prefix, route } from "@react-router/dev/routes";

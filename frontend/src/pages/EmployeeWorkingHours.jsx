@@ -2,6 +2,7 @@ import DateTable from "../components/DateTable";
 import Header from "../components/Header";
 
 import EmployeeFooter from "../components/EmployeeFooter";
+import { CalendarProvider } from "../context/CalendarContext";
 
 function EmployeeWorkingHours() {
   return (
@@ -14,8 +15,9 @@ function EmployeeWorkingHours() {
           <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3 block px-1">
             Specifični dani / Praznici
           </label>
-
-          <DateTable isSelectDate={"employee"} />
+          <CalendarProvider>
+            <DateTable isSelectDate={"employee"} />
+          </CalendarProvider>
         </div>
       </main>
 

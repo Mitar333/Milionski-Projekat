@@ -20,7 +20,6 @@ function NotFound() {
           Nazad na pocetak
         </Link>
       </div>
-      <Footer />
     </div>
   );
 }
